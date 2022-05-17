@@ -4,13 +4,11 @@
 
 .page {
   background-image: url("./images/georgia-de-lotz--UsJoNxLaNo-unsplash\ \(1\).png");
+  max-height: 580px;
   background-color: #ffffff;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  max-width: 1440px;
-  max-height: 576px;
   margin: 0 auto;
-  position: relative;
 }
 
