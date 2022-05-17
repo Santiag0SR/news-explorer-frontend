@@ -1,6 +1,12 @@
-.navigation {
+  .navigation {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    max-width: 1440px;
     display: flex;
     justify-content: space-between;
+    box-sizing: border-box;
     padding: 30px 104px 0px 104px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }

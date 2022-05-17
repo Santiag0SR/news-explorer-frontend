@@ -2,8 +2,13 @@
 display: flex;
 flex-direction: column;
 align-items: center;
-padding: 79px 0;
+padding: 160px 0;
 width: 100%;
+max-width: 1440px;
+background-image: url(../../images/georgia-de-lotz--UsJoNxLaNo-unsplash\ \(1\).png);
+background-position: center;
+background-size: cover;
+margin:0 auto;
 }
 
 .header__title{
