@@ -6,10 +6,10 @@ function Navigation() {
       <p className="navigation__logo">News Explorer</p>
       <nav className={`navigation__data`}>
         <a className={`navigation__link navigation__link_active-home`}>Home</a>
-        <a to={"/singin"} className={`navigation__link `} onClick={"#"}>
+        <a to={"/singin"} className={`navigation__link `}>
           Saved articles
         </a>
-        <button to={"/singin"} className={`navigation__button`} onClick={"#"}>
+        <button to={"/singin"} className={`navigation__button`}>
           Sign in
         </button>
       </nav>
