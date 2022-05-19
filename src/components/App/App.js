@@ -1,4 +1,6 @@
-import logo from "../../logo.svg";
+import { useState, useEffect } from "react";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+
 import "./App.css";
 import Navigation from "../Navigation/navigation";
 import Header from "../Header/header";
@@ -13,14 +15,30 @@ import PopupWithForm from "../PopupWithForm/popupwithform";
 function App() {
   return (
     <>
-      <Navigation />
-      <Header />
-      <Main />
-      <About />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Navigation />
+              <Header />
+              <Main />
+              <About />
+            </>
+          }
+        ></Route>
+        <Route
+          path="/saved-news"
+          element={
+            <>
+              <NavigationDark />
+              <SavedNewsHeader />
+              <SavedNews />
+            </>
+          }
+        ></Route>
+      </Routes>
       <Footer />
-      <NavigationDark />
-      <SavedNewsHeader />
-      <SavedNews />
       <PopupWithForm isOpen={false} />
     </>
   );
