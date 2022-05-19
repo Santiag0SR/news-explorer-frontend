@@ -12,6 +12,8 @@ function SavedNews() {
             onClick="{handlesaveClick}"
             title="hello"
           />
+          <p className="savednews-card__keyword">Nature</p>
+
           <img
             className="savednews-card__img"
             src={cardimage}
@@ -38,6 +40,7 @@ function SavedNews() {
             type="button"
             onClick="{handlesaveClick}"
           />
+          <p className="savednews-card__keyword">Nature</p>
           <img
             className="savednews-card__img"
             src={cardimage}
@@ -64,6 +67,8 @@ function SavedNews() {
             type="button"
             onClick="{handlesaveClick}"
           />
+          <p className="savednews-card__keyword">Nature</p>
+
           <img
             className="savednews-card__img"
             src={cardimage}
@@ -90,6 +95,8 @@ function SavedNews() {
             type="button"
             onClick="{handlesaveClick}"
           />
+          <p className="savednews-card__keyword">Nature</p>
+
           <img
             className="savednews-card__img"
             src={cardimage}
@@ -116,6 +123,8 @@ function SavedNews() {
             type="button"
             onClick="{handlesaveClick}"
           />
+          <p className="savednews-card__keyword">Nature</p>
+
           <img
             className="savednews-card__img"
             src={cardimage}
