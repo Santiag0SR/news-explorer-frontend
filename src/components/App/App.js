@@ -8,6 +8,7 @@ import Footer from "../Footer/footer";
 import NavigationDark from "../NavigationDark/navigationdark";
 import SavedNewsHeader from "../SavedNewsHeader/savednewsheader";
 import SavedNews from "../SavedNews/savednews";
+import PopupWithForm from "../PopupWithForm/popupwithform";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <NavigationDark />
       <SavedNewsHeader />
       <SavedNews />
+      <PopupWithForm isOpen={true} />
     </>
   );
 }

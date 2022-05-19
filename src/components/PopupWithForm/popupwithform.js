@@ -1,0 +1,46 @@
+import "./popupwithform.css";
+import closeButton from "../../images/close_button.svg";
+
+function PopupWithForm(props) {
+  return (
+    <div className={`modal  ${props.isOpen && "modal_open"}`}>
+      <div className={`modal__box`}>
+        <form className="form" onSubmit="{handleSubmit}">
+          <h2 className="form__title">Sign in</h2>
+          <p className="form__subtitle">Email</p>
+          <input
+            className="form__input"
+            id="email-input"
+            name="email"
+            type="email"
+            placeholder="Enter email"
+            // value="{email}"
+            // onChange="{(e) => setEmail(e.target.value)}"
+          />
+          <p className="form__subtitle">Password</p>
+          <input
+            className="form__input"
+            id="password-input"
+            name="password"
+            type="password"
+            placeholder="Enter password"
+            // value="{password}"
+            // onChange="{(e) => setPassword(e.target.value)}"
+          />
+          <button className="form__submit">Sign in</button>
+        </form>
+        {/* link to login page */}
+        <div>
+          <p className="from__redirection">
+            or{" "}
+            <a to="/signup" className="from__link">
+              Sign up
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default PopupWithForm;
