@@ -48,7 +48,7 @@
   color:#1A1B22;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-bottom: 22px;
+  padding-bottom: 9px;
 }
 
 .form__subtitle{
@@ -61,7 +61,7 @@
   color:#2F71E5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-bottom: 9px;
+  padding: 13px 0 9px 0;
   margin:0;
 }
 
@@ -86,11 +86,18 @@
   -moz-osx-font-smoothing: grayscale;
   padding: 20px 114px;
   transition: opacity 0.2s linear;
+  margin-top: 26px;
 }
 
 .form__submit:hover {
   opacity: 0.8;
   cursor: pointer;
+}
+
+.form__submit_active{
+  color:#FFFFFF;
+  background-color: #2F71E5;
+
 }
 
 .from__redirection{
@@ -125,11 +132,59 @@
   max-width: 358px;
   width: 100%;
   padding: 0 0 9px 0;
-  margin: 0 0 31px 0;
-  background-color: rgba(0, 0, 0, 0);
+  margin: 0 0 3px 0;
   color: #000000;
 }
 
 .form__input::placeholder{
   color:rgba(0,0,0,.2) ;
 }
+
+.form__error {
+  visibility: hidden;
+  color: #000000;
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+
+.from__error_visible {
+visibility: visible;  
+color: #ff0000;
+}
+
+.button {
+  cursor: pointer;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.modal__close-button {
+  position: absolute;
+  z-index: 9999;
+  top: -40.7px;
+  right: -40.7px;
+  width: 40.7px;
+  height: 40.7px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.modal__close-button:hover {
+  opacity: 0.6;
+}
+
+

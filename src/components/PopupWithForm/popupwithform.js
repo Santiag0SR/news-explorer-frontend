@@ -5,6 +5,12 @@ function PopupWithForm(props) {
   return (
     <div className={`modal  ${props.isOpen && "modal_open"}`}>
       <div className={`modal__box`}>
+        <button
+          className={`modal__close-button modal__close-button_type_${props.moldalType} button`}
+          type="button"
+          style={{ backgroundImage: `url(${closeButton})` }}
+          onClick={props.onClose}
+        />
         <form className="form" onSubmit="{handleSubmit}">
           <h2 className="form__title">Sign in</h2>
           <p className="form__subtitle">Email</p>
@@ -17,6 +23,12 @@ function PopupWithForm(props) {
             // value="{email}"
             // onChange="{(e) => setEmail(e.target.value)}"
           />
+          <span
+            id="email-input-error"
+            className="form__error from__error_visible"
+          >
+            as dasd as
+          </span>
           <p className="form__subtitle">Password</p>
           <input
             className="form__input"
@@ -27,7 +39,13 @@ function PopupWithForm(props) {
             // value="{password}"
             // onChange="{(e) => setPassword(e.target.value)}"
           />
-          <button className="form__submit">Sign in</button>
+          <span
+            id="password-input-error"
+            className="form__error from__error_visible"
+          >
+            as dasd as
+          </span>
+          <button className="form__submit form__submit_active">Sign in</button>
         </form>
         {/* link to login page */}
         <div>

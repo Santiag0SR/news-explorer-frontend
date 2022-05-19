@@ -21,7 +21,7 @@ function App() {
       <NavigationDark />
       <SavedNewsHeader />
       <SavedNews />
-      <PopupWithForm isOpen={true} />
+      <PopupWithForm isOpen={false} />
     </>
   );
 }
