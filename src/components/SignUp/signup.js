@@ -24,17 +24,17 @@ function SignUp(props) {
       onClose={props.onClose}
       onSwitch={props.handleFormSwitch}
       modaltype={"signup-open"}
-      //   redirectText={props.redirectText}
+      redirectText={props.redirectText}
     >
       <form className="form" onSubmit={handleSubmit}>
         <h2 className="form__title">Sign Up</h2>
         <p className="form__subtitle">User</p>
         <input
           className="form__input"
-          id="email-input"
-          name="email"
-          type="email"
-          placeholder="Enter email"
+          id="user-signup-input"
+          name="user"
+          type="text"
+          placeholder="Enter user"
           value={user}
           onChange={(e) => setUser(e.target.value)}
         />
@@ -47,7 +47,7 @@ function SignUp(props) {
         <p className="form__subtitle">Email</p>
         <input
           className="form__input"
-          id="email-input"
+          id="email-signup-input"
           name="email"
           type="email"
           placeholder="Enter email"
@@ -63,7 +63,7 @@ function SignUp(props) {
         <p className="form__subtitle">THIS IS THE SINGUP</p>
         <input
           className="form__input"
-          id="password-input"
+          id="password-signup-input"
           name="password"
           type="password"
           placeholder="Enter password"
@@ -80,7 +80,7 @@ function SignUp(props) {
           className="form__submit form__submit_active"
           //   onClick={props.handleFormSwitch}
         >
-          Sign in
+          Sign up
         </button>
       </form>
       {/* link to login page */}

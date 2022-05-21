@@ -66,7 +66,7 @@ function PopupWithForm(props) {
           <p className="from__redirection">
             or{" "}
             <button className="from__link" onClick={props.onSwitch}>
-              {props.redirectText} asds
+              {props.redirectText}
             </button>
           </p>
         </div>

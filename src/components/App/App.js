@@ -69,6 +69,7 @@ function App() {
 
   function handleSingInClick() {
     setIsSignInOpen(true);
+    setPopupRedirectText("Sign up");
   }
 
   function handleFormSwitch() {
@@ -129,14 +130,14 @@ function App() {
         isOpen={isSignInOpen}
         onClose={closeAllPopups}
         handleSignInSubmit={handleSignInSubmit}
-        popupRedirectText={popupRedirectText}
+        redirectText={popupRedirectText}
         handleFormSwitch={handleFormSwitch}
       />
       <SignUp
         isOpen={isSignUpOpen}
         onClose={closeAllPopups}
         handleSignUpSubmit={handleSignUpSubmit}
-        popupRedirectText={popupRedirectText}
+        redirectText={popupRedirectText}
         handleFormSwitch={handleFormSwitch}
       />
       {/* <PopupWithForm
