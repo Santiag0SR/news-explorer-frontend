@@ -15,7 +15,13 @@
     transition: visibility 0s linear 0.5s, opacity 0.5s linear;
   }
 
-  .modal_open {
+  .modal_signin-open {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+  }
+
+  .modal_signup-open {
     visibility: visible;
     opacity: 1;
     transition-delay: 0s;

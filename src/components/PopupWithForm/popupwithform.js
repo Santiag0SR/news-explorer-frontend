@@ -1,9 +1,11 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./popupwithform.css";
 import closeButton from "../../images/close_button.svg";
 
 function PopupWithForm(props) {
   return (
-    <div className={`modal  ${props.isOpen && "modal_open"}`}>
+    <div className={`modal  ${props.isOpen && `modal_${props.modaltype}`}`}>
       <div className={`modal__box`}>
         <button
           className={`modal__close-button modal__close-button_type_${props.moldalType} button`}
@@ -11,7 +13,8 @@ function PopupWithForm(props) {
           style={{ backgroundImage: `url(${closeButton})` }}
           onClick={props.onClose}
         />
-        <form className="form" onSubmit="{handleSubmit}">
+        {props.children}
+        {/* <form className="form" onSubmit={handleSubmit}>
           <h2 className="form__title">Sign in</h2>
           <p className="form__subtitle">Email</p>
           <input
@@ -20,8 +23,8 @@ function PopupWithForm(props) {
             name="email"
             type="email"
             placeholder="Enter email"
-            // value="{email}"
-            // onChange="{(e) => setEmail(e.target.value)}"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <span
             id="email-input-error"
@@ -36,8 +39,8 @@ function PopupWithForm(props) {
             name="password"
             type="password"
             placeholder="Enter password"
-            // value="{password}"
-            // onChange="{(e) => setPassword(e.target.value)}"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <span
             id="password-input-error"
@@ -46,14 +49,25 @@ function PopupWithForm(props) {
             as dasd as
           </span>
           <button className="form__submit form__submit_active">Sign in</button>
-        </form>
+        </form> */}
         {/* link to login page */}
+        {/* <div>
+          <p className="from__redirection">
+            or{" "}
+            <a
+              className="from__link"
+              // onClick={}
+            >
+              Sign up
+            </a>
+          </p>
+        </div> */}
         <div>
           <p className="from__redirection">
             or{" "}
-            <a to="/signup" className="from__link">
-              Sign up
-            </a>
+            <button className="from__link" onClick={props.onSwitch}>
+              {props.redirectText} asds
+            </button>
           </p>
         </div>
       </div>

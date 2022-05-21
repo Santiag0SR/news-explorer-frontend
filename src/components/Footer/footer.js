@@ -1,6 +1,7 @@
 import "./footer.css";
 import github_icon from "../../images/giticon.png";
 import facebook_icon from "../../images/facebookicon.png";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -10,7 +11,9 @@ function Footer() {
       </p>
 
       <nav className="footer__menu">
-        <a className="footer__link">Home</a>
+        <Link to={"/"} className="footer__link">
+          Home
+        </Link>
         <a className="footer__link">Practicum by Yandex</a>
         <a className="footer__link">
           <img

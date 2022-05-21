@@ -1,15 +1,54 @@
 import "./navigation.css";
+import { Link, useLocation } from "react-router-dom";
 
-function Navigation() {
+function Navigation(props) {
+  const location = useLocation();
+
   return (
-    <div className="navigation">
-      <p className="navigation__logo">News Explorer</p>
+    <div
+      className={`navigation ${
+        location.pathname === "/saved-news" ? "navigation__type_dark" : ""
+      }`}
+    >
+      <p
+        className={`navigation__logo ${
+          location.pathname === "/saved-news"
+            ? "navigation__logo_type_dark"
+            : ""
+        }`}
+      >
+        News Explorer
+      </p>
       <nav className={`navigation__data`}>
-        <a className={`navigation__link navigation__link_active-home`}>Home</a>
-        <a to={"/singin"} className={`navigation__link `}>
+        <Link
+          to={"/"}
+          className={`navigation__link navigation__link_active-home ${
+            location.pathname === "/saved-news"
+              ? "navigation__link_type_dark"
+              : ""
+          }`}
+        >
+          Home
+        </Link>
+        <Link
+          to={"/saved-news"}
+          className={`navigation__link ${
+            location.pathname === "/saved-news"
+              ? "navigation__link_type_dark"
+              : "navigation__link_hide"
+          }`}
+        >
           Saved articles
-        </a>
-        <button to={"/singin"} className={`navigation__button`}>
+        </Link>
+
+        <button
+          onClick={props.onSignInClick}
+          className={`navigation__button ${
+            location.pathname === "/saved-news"
+              ? "navigation__button_type_dark"
+              : ""
+          }`}
+        >
           Sign in
         </button>
       </nav>
