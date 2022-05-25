@@ -10,6 +10,10 @@ import Footer from "../Footer/footer";
 import NavigationDark from "../NavigationDark/navigationdark";
 import SavedNewsHeader from "../SavedNewsHeader/savednewsheader";
 import SavedNews from "../SavedNews/savednews";
+import NewsCard from "../NewsCard/newscard";
+import NewsCardList from "../NewsCardList/newscardlist";
+import api from "../../utils/newsapi";
+// import { getNewsCards } from "../../utils/newsapi";
 // import PopupWithForm from "../PopupWithForm/popupwithform";
 import SignIn from "../SignIn/signin";
 import SignUp from "../SignUp/signup";
@@ -18,10 +22,21 @@ function App() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [popupRedirectText, setPopupRedirectText] = useState("");
+  const [news, setNews] = useState([]);
 
   const handleSearchSubmit = (search) => {
     console.log(search);
+    let keyword = search;
+    api.getNewsCards({ keyword }).then((res) => {
+      // const news = JSON.stringify(res.articles);
+      // console.log(typeof news);
+      setNews(res.articles);
+      // console.log(res.articles);
+      // setNews(JSON.stringify(res.articles));
+    });
   };
+
+  const handleCardSave = () => {};
 
   const handleSignInSubmit = (email, password) => {
     console.log(email, password);
@@ -89,6 +104,17 @@ function App() {
     setIsSignUpOpen(false);
   }
 
+  // useEffect(() => {
+  //   let keyword = "Real Madrid";
+  //   api.getNewsCards({ keyword }).then((res) => {
+  //     // const news = JSON.stringify(res.articles);
+  //     // console.log(typeof news);
+  //     setNews(res.articles);
+  //     // console.log(res.articles);
+  //     // setNews(JSON.stringify(res.articles));
+  //   });
+  // }, []);
+
   useEffect(() => {
     const closeByEscape = (e) => {
       if (e.key === "Escape") {
@@ -103,13 +129,14 @@ function App() {
   return (
     <>
       <Routes>
+        {/* <Route path="/api" element={<NewsCardList data={news} />} /> */}
         <Route
           path="/"
           element={
             <>
               <Navigation onSignInClick={handleSingInClick} />
               <Header handleSearchSubmit={handleSearchSubmit} />
-              {/* <Main /> */}
+              <Main cards={news} onCardSave={handleCardSave} />
               <About />
             </>
           }
