@@ -1,6 +1,4 @@
-const baseUrl = "https://newsapi.org/v2/everything";
-const apiKey = "0dedde68476744e1977ef38e53c8b7ea";
-var keyword = "apple";
+import { getDefaultNormalizer } from "@testing-library/react";
 
 class Api {
   constructor(props) {
@@ -16,9 +14,9 @@ class Api {
   //     }).then((res) => console.log(res));
   //   }
 
-  getNewsCards({ keyword }) {
+  getNewsCards({ keyword, numberCards }) {
     return fetch(
-      ` ${this.baseUrl}?q=${keyword}&pageSize=3&apiKey=${this.apiKey}`,
+      ` ${this.baseUrl}?q=${keyword}&pageSize=${numberCards}&apiKey=${this.apiKey}`,
       {
         method: "GET",
         headers: this.headers,
@@ -32,12 +30,15 @@ class Api {
 const api = new Api({
   baseUrl: "https://nomoreparties.co/news/v2/everything",
   headers: {
-    Authorization: "0dedde68476744e1977ef38e53c8b7ea",
+    Authorization: "fee2e9d671074296b23c0e764b18f3c7",
     "Content-Type": "application/json",
   },
-  apiKey: "0dedde68476744e1977ef38e53c8b7ea",
+  apiKey: "fee2e9d671074296b23c0e764b18f3c7",
 });
 
-export default api;
+// santisanchezromero@gmail.com
+// 0dedde68476744e1977ef38e53c8b7ea
 
-// &${this.apiKey}
+// santiago@carrerasinternacionales.com
+// fee2e9d671074296b23c0e764b18f3c7
+export default api;

@@ -1,26 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import SavedNews from "../SavedNews/savednews";
 import "./newscard.css";
-// import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-// function NewsCard({ card, onCardClick, onCardSave, onCardDelete }) {
-function NewsCard({ card, onCardSave }) {
-  //   const user = React.useContext(CurrentUserContext);
-  //   const isOwn = card.owner._id === user._id;
-  //   const cardDeleteButtonClassName = `button card__delete-button ${
-  //     isOwn ? "card__delete-button_visible" : "card__delete-button_hidden"
-  //   }`;
-  //   const isLiked = card.likes.some((item) => item._id === user._id);
-  //   const cardLikeButtonClassName = `button card__like-button ${
-  //     isLiked ? "card__like-button_active" : "card__like-button_inactive"
-  //   }`;
+let savedCardList = [];
 
-  //   function handleClick() {
-  //     onCardClick(card);
-  //   }
+function NewsCard({ card, onCardSave, setSavedCards }) {
+  const [saved, setSaved] = useState(false);
 
   function handleSaveClick() {
-    onCardSave(card);
+    if (saved) {
+      setSaved(false);
+      savedCardList = savedCardList.filter((item) => item !== card);
+      console.log(savedCardList);
+    } else {
+      setSaved(true);
+      onCardSave(card);
+      console.log(card);
+      savedCardList.push(card);
+      console.log(savedCardList);
+    }
+    setSavedCards(savedCardList);
+    localStorage.setItem("savedCards", JSON.stringify(savedCardList));
   }
+
+  const cardSaveButtonClassName = `card__save-button ${
+    saved ? "card__save-button_active" : "card__save-button_inactive"
+  }`;
+
+  // function handleSaveClick() {
+  //   onCardSave(card);
+  // }
 
   //   function handleDeleteClick() {
   //     onCardDelete(card);
@@ -29,9 +38,9 @@ function NewsCard({ card, onCardSave }) {
   return (
     <article className="card">
       <button
-        className="card__save-button"
+        className={cardSaveButtonClassName}
         type="button"
-        // onClick={handleSaveClick}
+        onClick={handleSaveClick}
         title="hello"
       />
       <img

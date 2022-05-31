@@ -34,7 +34,7 @@ function Navigation(props) {
           to={"/saved-news"}
           className={`navigation__link ${
             location.pathname === "/saved-news"
-              ? "navigation__link_type_dark"
+              ? "navigation__link_type_dark navigation__link_active-saved-news"
               : "navigation__link_hide"
           }`}
         >

@@ -116,7 +116,7 @@
     top: 18px;
     right: 15px;
     border-radius: 8px;
-    background-image: url("../../images/save_button.svg");
+    /* background-image: url("../../images/save_button.svg"); */
     background-repeat: no-repeat;
     background-position: center;
     background-color: #fff;
@@ -126,12 +126,25 @@
     transition: all linear 0.3s;
     cursor: pointer;
   }
-  
-  .card__save-button:hover {
+
+  .card__save-button_active{
+    background-image: url("../../images/save_button_marked.svg");
+  }
+
+  .card__save-button_active:hover{
+    background-image: url("../../images/save_button_marked_hover.svg");
+
+  }
+
+  .card__save-button_inactive{
+    background-image: url("../../images/save_button.svg");
+  }
+
+  .card__save-button_inactive:hover {
     background-image: url("../../images/save_button_black.svg");
   }
 
-  .card__save-button:hover:after { 
+  .card__save-button_inactive:hover:after { 
     width: 182px;
     max-height: 40px;
     content: "Sign in to save articles"; 

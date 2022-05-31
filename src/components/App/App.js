@@ -17,26 +17,83 @@ import api from "../../utils/newsapi";
 // import PopupWithForm from "../PopupWithForm/popupwithform";
 import SignIn from "../SignIn/signin";
 import SignUp from "../SignUp/signup";
+import Preloader from "../Preloader/preloader";
+import NotFound from "../NotFound/notfound";
 
 function App() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [popupRedirectText, setPopupRedirectText] = useState("");
   const [news, setNews] = useState([]);
+  const [numberCards, setNumberCards] = useState("3");
+  const [isLoading, setIsLoading] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("articles") !== null) {
+      setSearching(true);
+      setNews(JSON.parse(localStorage.getItem("articles")));
+    }
+  }, []);
 
   const handleSearchSubmit = (search) => {
-    console.log(search);
+    setSearching(false);
+    setNotFound(false);
+    setIsLoading(true);
+    setNumberCards("3");
     let keyword = search;
-    api.getNewsCards({ keyword }).then((res) => {
-      // const news = JSON.stringify(res.articles);
-      // console.log(typeof news);
-      setNews(res.articles);
-      // console.log(res.articles);
-      // setNews(JSON.stringify(res.articles));
-    });
+    localStorage.setItem("keyword", search);
+    api
+      .getNewsCards({ keyword, numberCards })
+      .then((res) => {
+        if (res.totalResults === 0) {
+          setNotFound(true);
+          localStorage.removeItem("articles");
+        } else {
+          setNotFound(false);
+          localStorage.setItem("articles", JSON.stringify(res.articles));
+          setNews(JSON.parse(localStorage.getItem("articles")));
+          localStorage.setItem("resultsNumber", res.totalResults);
+        }
+      })
+      .catch((err) => {
+        console.log(`Error:${err}`);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setSearching(true);
+      });
   };
 
-  const handleCardSave = () => {};
+  function handleCardSave(card) {
+    let keyword = localStorage.getItem("keyword");
+    console.log(keyword);
+    console.log(card);
+    // add when set up personal api
+    // api.saveCard(card, keyword).then((newCard) => setNews([newCard, ...news]));
+  }
+
+  function handleCardDelete(card) {
+    console.log(card);
+    // add when set up personal api
+    // api.saveCard(card, keyword).then((newCard) => setNews([newCard, ...news]));
+  }
+
+  const handleShowMoreButton = () => {
+    const totalResults = localStorage.getItem("resultsNumber");
+
+    if (totalResults < parseInt(numberCards)) {
+      console.log("do nothing");
+    } else {
+      let addnews = (3 + news.length).toString();
+      const keyword = localStorage.getItem("keyword");
+      api.getNewsCards({ keyword, numberCards: addnews }).then((res) => {
+        localStorage.setItem("articles", JSON.stringify(res.articles));
+        setNews(JSON.parse(localStorage.getItem("articles")));
+      });
+    }
+  };
 
   const handleSignInSubmit = (email, password) => {
     console.log(email, password);
@@ -136,7 +193,17 @@ function App() {
             <>
               <Navigation onSignInClick={handleSingInClick} />
               <Header handleSearchSubmit={handleSearchSubmit} />
-              <Main cards={news} onCardSave={handleCardSave} />
+              {notFound && <NotFound />}
+
+              {isLoading && <Preloader />}
+              {searching && !notFound && (
+                <Main
+                  cards={news}
+                  onCardSave={handleCardSave}
+                  onShowMore={handleShowMoreButton}
+                />
+              )}
+
               <About />
             </>
           }
@@ -147,7 +214,12 @@ function App() {
             <>
               <Navigation />
               <SavedNewsHeader />
-              <SavedNews />
+              <Main
+                cards={news}
+                onShowMore={handleShowMoreButton}
+                onCardDelete={handleCardDelete}
+              />
+              {/* <SavedNews /> */}
             </>
           }
         />

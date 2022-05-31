@@ -50,6 +50,11 @@
     padding:0 4px 23px 4px;
   }
 
+  .navigation__link_active-saved-news{
+    border-bottom: 3px solid #1A1B22;
+    padding:0 4px 23px 4px;
+  }
+
   .navigation__link_hide{
     display:none;
   }
