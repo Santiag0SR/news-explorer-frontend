@@ -1,5 +1,5 @@
 import "./navigationdark.css";
-import logout from "../../images/logout.svg";
+// import logout from "../../images/logout.svg";
 
 function NavigationDark() {
   return (
@@ -20,7 +20,7 @@ function NavigationDark() {
           onClick={"#"}
         >
           Elise
-          <img className="logout-icon" alt="logout" src={logout} />
+          {/* <img className="logout-icon" alt="logout" src={logout} /> */}
         </button>
       </nav>
     </div>

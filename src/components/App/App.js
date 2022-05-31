@@ -29,6 +29,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [searching, setSearching] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const [isLoggedin, setIsLoggedin] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("articles") !== null) {
@@ -97,6 +100,10 @@ function App() {
 
   const handleSignInSubmit = (email, password) => {
     console.log(email, password);
+    setIsLoggedin(true);
+    closeAllPopups();
+    navigate("/saved-news");
+
     // authorize(email, password)
     //   .then((res) => {
     //     if (res.token) {
@@ -138,6 +145,12 @@ function App() {
     //     setTooltipOpen(true);
     //   });
   };
+
+  function handleLogoutClick() {
+    console.log("hello");
+    setIsLoggedin(false);
+    navigate("/");
+  }
 
   function handleSingInClick() {
     setIsSignInOpen(true);
@@ -191,7 +204,11 @@ function App() {
           path="/"
           element={
             <>
-              <Navigation onSignInClick={handleSingInClick} />
+              <Navigation
+                onSignInClick={handleSingInClick}
+                isLoggedin={isLoggedin}
+                onLogout={handleLogoutClick}
+              />
               <Header handleSearchSubmit={handleSearchSubmit} />
               {notFound && <NotFound />}
 
@@ -212,7 +229,10 @@ function App() {
           path="/saved-news"
           element={
             <>
-              <Navigation />
+              <Navigation
+                isLoggedin={isLoggedin}
+                onLogout={handleLogoutClick}
+              />
               <SavedNewsHeader />
               <Main
                 cards={news}
@@ -228,14 +248,14 @@ function App() {
       <SignIn
         isOpen={isSignInOpen}
         onClose={closeAllPopups}
-        handleSignInSubmit={handleSignInSubmit}
+        onSignin={handleSignInSubmit}
         redirectText={popupRedirectText}
         handleFormSwitch={handleFormSwitch}
       />
       <SignUp
         isOpen={isSignUpOpen}
         onClose={closeAllPopups}
-        handleSignUpSubmit={handleSignUpSubmit}
+        onSignup={handleSignUpSubmit}
         redirectText={popupRedirectText}
         handleFormSwitch={handleFormSwitch}
       />

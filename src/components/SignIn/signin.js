@@ -10,7 +10,7 @@ function SignIn(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.handleSignInSubmit(email, password);
+    props.onSignin(email, password);
     setEmail("");
     setPassword("");
   };
@@ -60,7 +60,7 @@ function SignIn(props) {
         </span>
         <button
           className="form__submit form__submit_active"
-          //   onClick={props.handleFormSwitch}
+          // onClick={handleSignInSubmit}
         >
           Sign in
         </button>

@@ -11,7 +11,7 @@ function SignUp(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.handleSignUpSubmit(user, email, password);
+    props.onSignup(user, email, password);
     setEmail("");
     setPassword("");
     setUser("");
@@ -60,7 +60,7 @@ function SignUp(props) {
         >
           as dasd as
         </span>
-        <p className="form__subtitle">THIS IS THE SINGUP</p>
+        <p className="form__subtitle">Password</p>
         <input
           className="form__input"
           id="password-signup-input"
