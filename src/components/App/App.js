@@ -126,6 +126,8 @@ function App() {
 
   const handleSignUpSubmit = (user, email, password) => {
     console.log(user, email, password);
+    setIsSignUpOpen(false);
+    setIsSignInOpen(true);
     // authorize(email, password)
     //   .then((res) => {
     //     if (res.token) {

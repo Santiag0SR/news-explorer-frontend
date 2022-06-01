@@ -8,7 +8,6 @@
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
-    padding-bottom: 25px;
     line-height: 1.2;
     text-align: left;
     color:#1A1B22;
@@ -28,7 +27,6 @@
 
 .footer__menu{
     display: flex;
-
 }
 
 .footer__link{
@@ -38,3 +36,29 @@
 }
 
 .footer__icon{}
+
+
+@media screen and (max-width: 800px) {
+    .footer {
+        max-width: 768px;
+        padding: 24px 48px 18px 40px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .footer {
+
+    }
+    .footer__author{
+
+    }
+
+    .footer__menu{
+
+
+    }
+    .footer__link{
+
+    }
+
+}
