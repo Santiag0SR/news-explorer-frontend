@@ -12,6 +12,7 @@ function Main({
   onShowMore,
   onSaveClick,
   onCardDelete,
+  isDisabled,
 }) {
   const location = useLocation();
 
@@ -49,8 +50,13 @@ function Main({
               />
             ))}
           </section>
-          <button className="content__show-more-button" onClick={onShowMore}>
-            Show more
+          <button
+            className={`content__show-more-button ${
+              isDisabled && "content__show-more-button_disabled"
+            }`}
+            onClick={onShowMore}
+          >
+            {isDisabled ? "Disabled" : "Show more"}
           </button>
         </>
       )}

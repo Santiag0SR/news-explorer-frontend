@@ -213,33 +213,3 @@
     border: none;
     border-radius: 10px;
   }
-  
-
-  .content__show-more-button{
-    color:#1A1B22;
-    font-family: "Roboto", "Inter", Arial, sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 1.2;
-    -webkit-font-smoothing: antialiased;
-    text-decoration: none;
-    background-color: #ffffff;
-    padding:20px 97px;
-    text-align: center;
-    border: none;
-    width: 288px;
-    border-radius: 80px;
-    display: flex;
-    justify-content: center;
-    margin:0 auto 0 auto;
-    box-sizing: border-box;
-    cursor: pointer;
-  }
-
-  .content__show-more-button:hover{
-  background-color: #E8E8E8;
-}
-
-
-    

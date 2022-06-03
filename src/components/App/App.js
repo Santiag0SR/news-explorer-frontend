@@ -30,6 +30,7 @@ function App() {
   const [searching, setSearching] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [isLoggedin, setIsLoggedin] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const navigate = useNavigate();
 
@@ -58,6 +59,10 @@ function App() {
           localStorage.setItem("articles", JSON.stringify(res.articles));
           setNews(JSON.parse(localStorage.getItem("articles")));
           localStorage.setItem("resultsNumber", res.totalResults);
+          const totalResults = localStorage.getItem("resultsNumber");
+          if (totalResults < parseInt(numberCards)) {
+            setIsDisabled(true);
+          } else setIsDisabled(false);
         }
       })
       .catch((err) => {
@@ -87,8 +92,10 @@ function App() {
     const totalResults = localStorage.getItem("resultsNumber");
 
     if (totalResults < parseInt(numberCards)) {
-      console.log("do nothing");
+      console.log("no more results");
+      setIsDisabled(true);
     } else {
+      setIsDisabled(false);
       let addnews = (3 + news.length).toString();
       const keyword = localStorage.getItem("keyword");
       api.getNewsCards({ keyword, numberCards: addnews }).then((res) => {
@@ -220,6 +227,7 @@ function App() {
                   cards={news}
                   onCardSave={handleCardSave}
                   onShowMore={handleShowMoreButton}
+                  isDisabled={isDisabled}
                 />
               )}
 

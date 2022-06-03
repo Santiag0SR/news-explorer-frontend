@@ -2,13 +2,20 @@
 display: flex;
 flex-direction: column;
 align-items: center;
-padding: 160px 0;
+padding: 160px 0 80px;
 width: 100%;
 max-width: 1440px;
 background-image: url(../../images/georgia-de-lotz--UsJoNxLaNo-unsplash\ \(1\).png);
 background-position: center;
 background-size: cover;
 margin:0 auto;
+box-sizing: border-box;
+}
+
+.header__content{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
 }
 
 .header__title{
@@ -36,6 +43,7 @@ margin:0 auto;
     -webkit-font-smoothing: antialiased;
     text-decoration: none;
     max-width: 608px;
+    text-align: left;
     margin: 32px 0 88px 0;
 
 }
@@ -60,13 +68,12 @@ width:100%;
     font-weight: 400;
     font-size: 16px;
     line-height: 1.38;
-    color: #B6BCBF;
+    color: #1A1B22;
     box-sizing: border-box;
 }
 
 
 .search-form__button{
-    background-color: #2F71E5;
     box-shadow: 0px 5px 15px rgba(14, 26, 57, 0.2);
     border-radius: 100px;
     min-height: 64px;
@@ -79,6 +86,78 @@ width:100%;
     line-height: 1.33;
     color: #fff;
     padding-top: 0;
-    margin-left: -168px;
+    margin-left: -160px;
     border: none;
+    cursor: pointer;
+}
+
+.search-form__button_hover{
+    background-color: #2F71E5;
+
+}
+
+.search-form__button_hover:hover{
+    background-color: #347EFF;
+}
+
+.search-form__button_clicked{
+    background-color: #2A65CC;
+
+
+}
+
+
+
+
+@media screen and (max-width: 800px) {
+    .header {
+        max-width: 768px;
+        padding: 104px 0 48px;
+    }
+    .header__title{
+        font-size: 36px;
+        max-width: 385px;
+    }
+    .header__subtitle{
+        max-width: 452px;
+        margin: 16px 0 48px 0;
+
+    }
+    .search-form__input{
+        min-height: 56px;
+        max-width: 448px;
+    }
+    .search-form__button{
+        min-height: 56px;
+        max-width: 160px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .header {
+        max-width: 320px;
+        padding: 86px 16px 32px;
+    }
+    .header__title{
+        font-size: 36px;
+        max-width: 285px;
+    }
+    .header__subtitle{
+        max-width: 288px;
+        margin: 16px 0 122px 0;
+
+    }
+    .search-form{
+        flex-direction: column;
+
+    }
+    .search-form__input{
+        min-height: 56px;
+        max-width: 288px;
+    }
+    .search-form__button{
+        min-height: 56px;
+        max-width: 288px;
+        margin:16px 0 0 0;
+    }
 }
