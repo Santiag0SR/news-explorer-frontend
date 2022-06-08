@@ -1,5 +1,4 @@
 import "./savednews.css";
-import cardimage from "../../images/image_08.png";
 
 function SavedNews({ savedCard, onCardDelete }) {
   function handleDeleteClick() {

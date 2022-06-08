@@ -38,8 +38,6 @@
         max-width: 608px;
         margin: 0;
         padding: 0 0 28px 0;
-
-    
     }
 
     .savednewsheader__keywords {
@@ -56,3 +54,23 @@
         font-weight: 700;
       }
     
+  @media screen and (max-width: 800px) {
+    .savednewsheader{
+      padding: 90px 40px 32px;
+      max-width: 768px;
+    }
+
+    .savednewsheader__title{
+      font-size: 30px;
+      max-width: 336px;
+      padding: 0 0 16px 0;
+  }
+    .savednewsheader__subtitle{
+      padding: 0 0 16px 0;
+  }
+
+  }
+  
+  @media screen and (max-width: 500px) {
+     
+  }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import SavedNews from "../SavedNews/savednews";
 import "./newscard.css";
 
 let savedCardList = [];
@@ -27,6 +26,7 @@ function NewsCard({ card, onCardSave, setSavedCards }) {
     saved ? "card__save-button_active" : "card__save-button_inactive"
   }`;
 
+  // TO ADD WHEN BACKEND ADDED
   // function handleSaveClick() {
   //   onCardSave(card);
   // }
@@ -43,12 +43,7 @@ function NewsCard({ card, onCardSave, setSavedCards }) {
         onClick={handleSaveClick}
         title="hello"
       />
-      <img
-        className="card__img"
-        src={card.urlToImage}
-        alt={card.title}
-        // onClick={handleClick}
-      />
+      <img className="card__img" src={card.urlToImage} alt={card.title} />
       <div className="card__text-container">
         <p className="card__date">{card.publishedAt}</p>
         <h2 className="card__title">{card.title} </h2>

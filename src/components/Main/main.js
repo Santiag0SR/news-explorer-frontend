@@ -1,9 +1,8 @@
 import "./main.css";
 import NewsCard from "../NewsCard/newscard";
-import NewsCardList from "../NewsCardList/newscardlist";
 import SavedNews from "../SavedNews/savednews";
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Main({
   cards,
@@ -16,15 +15,9 @@ function Main({
 }) {
   const location = useLocation();
 
+  // This is just temporary until backend is added
   const [savedCards, setSavedCards] = useState([]);
-
   const newSavedCards = JSON.parse(localStorage.getItem("savedCards"));
-
-  // function handleSavedCards() {
-  //   console.log(cards.length);
-  //   if (cards.length === 0) {
-  //   }
-  // }
 
   function handleDeleteClick() {}
 
@@ -33,8 +26,6 @@ function Main({
       {location.pathname === "/" && (
         <>
           <h2 className="content__title">Serarch Results</h2>
-          {/* <button onClick={handleSavedCards}>Just Checking</button> */}
-
           <section className="elements">
             {cards.map((card) => (
               <NewsCard
@@ -42,11 +33,7 @@ function Main({
                 card={card}
                 setSavedCards={setSavedCards}
                 savedCards={savedCards}
-                // childToParent={childToParent}
                 onCardSave={onCardSave}
-                // onChange={(value = setSavedCards())}
-                // setSavedCards={setSavedCards()}
-                // onCardSave={onCardSave}
               />
             ))}
           </section>
@@ -60,24 +47,25 @@ function Main({
           </button>
         </>
       )}
-      {location.pathname === "/saved-news" && (
-        <>
-          {/* <button onClick={handleSavedCards}>Just Checking</button> */}
-          <section className="elements">
-            {newSavedCards.map((savedCard) => (
-              <SavedNews
-                key={savedCard.url}
-                savedCard={savedCard}
-                onDeleteClick={handleDeleteClick}
-                onCardDelete={onCardDelete}
-              />
-            ))}
-          </section>
-          <button className="content__show-more-button" onClick={onShowMore}>
-            HEllO
-          </button>
-        </>
-      )}
+      {location.pathname === "/saved-news" &&
+        (newSavedCards !== null ? (
+          <>
+            {newSavedCards !== null && (
+              <section className="elements">
+                {newSavedCards.map((savedCard) => (
+                  <SavedNews
+                    key={savedCard.url}
+                    savedCard={savedCard}
+                    onDeleteClick={handleDeleteClick}
+                    onCardDelete={onCardDelete}
+                  />
+                ))}
+              </section>
+            )}
+          </>
+        ) : (
+          <p className="content__title"> NOTHING SAVED</p>
+        ))}
     </main>
   );
 }

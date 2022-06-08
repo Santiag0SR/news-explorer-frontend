@@ -8,12 +8,6 @@ class Api {
     this.apiKey = props.apiKey;
   }
 
-  //   getProfile() {
-  //     return fetch(`${this.baseUrl}/users/me`, {
-  //       headers: this.headers,
-  //     }).then((res) => console.log(res));
-  //   }
-
   getNewsCards({ keyword, numberCards }) {
     return fetch(
       ` ${this.baseUrl}?q=${keyword}&pageSize=${numberCards}&apiKey=${this.apiKey}`,
@@ -36,9 +30,4 @@ const api = new Api({
   apiKey: "fee2e9d671074296b23c0e764b18f3c7",
 });
 
-// santisanchezromero@gmail.com
-// 0dedde68476744e1977ef38e53c8b7ea
-
-// santiago@carrerasinternacionales.com
-// fee2e9d671074296b23c0e764b18f3c7
 export default api;

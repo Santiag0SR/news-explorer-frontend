@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import "./signin.css";
-import closeButton from "../../images/close_button.svg";
 import PopupWithForm from "../PopupWithForm/popupwithform";
 
 function SignIn(props) {
@@ -58,14 +55,8 @@ function SignIn(props) {
         >
           as dasd as
         </span>
-        <button
-          className="form__submit form__submit_active"
-          // onClick={handleSignInSubmit}
-        >
-          Sign in
-        </button>
+        <button className="form__submit form__submit_active">Sign in</button>
       </form>
-      {/* link to login page */}
     </PopupWithForm>
   );
 }

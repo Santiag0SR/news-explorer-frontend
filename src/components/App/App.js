@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
 import "./App.css";
 import Navigation from "../Navigation/navigation";
@@ -7,14 +7,8 @@ import Header from "../Header/header";
 import Main from "../Main/main";
 import About from "../About/about";
 import Footer from "../Footer/footer";
-import NavigationDark from "../NavigationDark/navigationdark";
 import SavedNewsHeader from "../SavedNewsHeader/savednewsheader";
-import SavedNews from "../SavedNews/savednews";
-import NewsCard from "../NewsCard/newscard";
-import NewsCardList from "../NewsCardList/newscardlist";
 import api from "../../utils/newsapi";
-// import { getNewsCards } from "../../utils/newsapi";
-// import PopupWithForm from "../PopupWithForm/popupwithform";
 import SignIn from "../SignIn/signin";
 import SignUp from "../SignUp/signup";
 import Preloader from "../Preloader/preloader";
@@ -31,6 +25,7 @@ function App() {
   const [notFound, setNotFound] = useState(false);
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const navigate = useNavigate();
 
@@ -110,7 +105,7 @@ function App() {
     setIsLoggedin(true);
     closeAllPopups();
     navigate("/saved-news");
-
+    // TO ADD WHEN BACKEND ADDED
     // authorize(email, password)
     //   .then((res) => {
     //     if (res.token) {
@@ -134,7 +129,9 @@ function App() {
   const handleSignUpSubmit = (user, email, password) => {
     console.log(user, email, password);
     setIsSignUpOpen(false);
+    setShowMobileMenu(false);
     setIsSignInOpen(true);
+    // TO ADD WHEN BACKEND ADDED
     // authorize(email, password)
     //   .then((res) => {
     //     if (res.token) {
@@ -155,6 +152,16 @@ function App() {
     //   });
   };
 
+  function toggleMenu() {
+    if (showMobileMenu) {
+      setShowMobileMenu(false);
+    } else setShowMobileMenu(true);
+  }
+
+  function handleLinkClick() {
+    setShowMobileMenu(false);
+  }
+
   function handleLogoutClick() {
     console.log("hello");
     setIsLoggedin(false);
@@ -162,6 +169,7 @@ function App() {
   }
 
   function handleSingInClick() {
+    setShowMobileMenu(false);
     setIsSignInOpen(true);
     setPopupRedirectText("Sign up");
   }
@@ -181,18 +189,8 @@ function App() {
   function closeAllPopups() {
     setIsSignInOpen(false);
     setIsSignUpOpen(false);
+    setShowMobileMenu(false);
   }
-
-  // useEffect(() => {
-  //   let keyword = "Real Madrid";
-  //   api.getNewsCards({ keyword }).then((res) => {
-  //     // const news = JSON.stringify(res.articles);
-  //     // console.log(typeof news);
-  //     setNews(res.articles);
-  //     // console.log(res.articles);
-  //     // setNews(JSON.stringify(res.articles));
-  //   });
-  // }, []);
 
   useEffect(() => {
     const closeByEscape = (e) => {
@@ -208,12 +206,14 @@ function App() {
   return (
     <>
       <Routes>
-        {/* <Route path="/api" element={<NewsCardList data={news} />} /> */}
         <Route
           path="/"
           element={
             <>
               <Navigation
+                showMobileMenu={showMobileMenu}
+                toggleMenu={toggleMenu}
+                onLinkClick={handleLinkClick}
                 onSignInClick={handleSingInClick}
                 isLoggedin={isLoggedin}
                 onLogout={handleLogoutClick}
@@ -240,16 +240,21 @@ function App() {
           element={
             <>
               <Navigation
+                showMobileMenu={showMobileMenu}
+                toggleMenu={toggleMenu}
+                onLinkClick={handleLinkClick}
+                onSignInClick={handleSingInClick}
                 isLoggedin={isLoggedin}
                 onLogout={handleLogoutClick}
               />
               <SavedNewsHeader />
-              <Main
-                cards={news}
-                onShowMore={handleShowMoreButton}
-                onCardDelete={handleCardDelete}
-              />
-              {/* <SavedNews /> */}
+              {news !== null && (
+                <Main
+                  cards={news}
+                  onShowMore={handleShowMoreButton}
+                  onCardDelete={handleCardDelete}
+                />
+              )}
             </>
           }
         />
@@ -269,11 +274,6 @@ function App() {
         redirectText={popupRedirectText}
         handleFormSwitch={handleFormSwitch}
       />
-      {/* <PopupWithForm
-        isOpen={isSignInOpen}
-        onClose={closeAllPopups}
-        handleSignInSubmit={handleSignInSubmit}
-      /> */}
     </>
   );
 }

@@ -2,75 +2,69 @@ import "./navigation.css";
 import { Link, useLocation } from "react-router-dom";
 import logoutLight from "../../images/logout_light.svg";
 import logoutDark from "../../images/logout_dark.svg";
+import mobileMenuLight from "../../images/menu-mobile-light.svg";
 import mobileMenuDark from "../../images/menu-mobile-dark.svg";
 import closeMenuButton from "../../images/close_button.svg";
 
-import { useState, useEffect } from "react";
-
 function Navigation(props) {
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
-
   const location = useLocation();
-
-  useEffect(() => {
-    const closeByEscape = (e) => {
-      if (e.key === "Escape") {
-        setShowMobileMenu(false);
-      }
-    };
-
-    document.addEventListener("keydown", closeByEscape);
-    return () => document.removeEventListener("keydown", closeByEscape);
-  });
-
-  function toggleMenu() {
-    if (showMobileMenu) {
-      setShowMobileMenu(false);
-    } else setShowMobileMenu(true);
-  }
 
   return (
     <div
       className={`navigation ${
-        location.pathname === "/saved-news" ? "navigation__type_dark" : ""
-      } ${showMobileMenu && "navigation_type_menu_active"}`}
-      onClick={toggleMenu}
+        props.showMobileMenu && "navigation_type_menu_active"
+      }`}
+      onClick={props.toggleMenu}
     >
       <div
         className={`navigation__wraper ${
-          showMobileMenu && "navigation_type_background-dark"
-        }`}
+          location.pathname === "/saved-news"
+            ? "navigation__wraper_type_dark"
+            : ""
+        } ${props.showMobileMenu && "navigation_wraper_type_background-dark"}`}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
         <p
           className={`navigation__logo ${
-            location.pathname === "/saved-news"
+            location.pathname === "/saved-news" && !props.showMobileMenu
               ? "navigation__logo_type_dark"
-              : ""
+              : "navigation__logo_mobile_open"
           }`}
         >
           News Explorer
         </p>
         <div className="navigation__mobile-menu">
-          <button className="navigation__mobile-button" onClick={toggleMenu}>
+          <button
+            className="navigation__mobile-button"
+            onClick={props.toggleMenu}
+          >
             <img
               className="navigation__menu-button"
-              src={showMobileMenu ? closeMenuButton : mobileMenuDark}
+              src={
+                location.pathname === "/saved-news"
+                  ? props.showMobileMenu
+                    ? closeMenuButton
+                    : mobileMenuDark
+                  : props.showMobileMenu
+                  ? closeMenuButton
+                  : mobileMenuLight
+              }
             ></img>
           </button>
         </div>
         <nav
           className={`navigation__data ${
-            showMobileMenu && "navigation__data_active"
+            props.showMobileMenu && "navigation__data_active"
           }`}
         >
           <div className="navigation__normal-menu">
             <Link
               to={"/"}
+              onClick={props.onLinkClick}
               className={`navigation__link navigation__link_active-home ${
-                location.pathname === "/saved-news"
+                location.pathname === "/saved-news" && !props.showMobileMenu
                   ? "navigation__link_type_dark"
                   : ""
               }`}
@@ -80,6 +74,7 @@ function Navigation(props) {
             {props.isLoggedin && (
               <Link
                 to={"/saved-news"}
+                onClick={props.onLinkClick}
                 className={`navigation__link ${
                   location.pathname === "/saved-news" &&
                   "navigation__link_type_dark navigation__link_active-saved-news"
@@ -102,7 +97,7 @@ function Navigation(props) {
                   className={"logout-icon"}
                   alt="logout"
                   src={
-                    location.pathname === "/saved-news"
+                    location.pathname === "/saved-news" && !props.showMobileMenu
                       ? logoutDark
                       : logoutLight
                   }
