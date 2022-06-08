@@ -47,7 +47,6 @@ function SignUp(props) {
           value={user}
           onChange={(e) => {
             setUser(e.target.value);
-            handleChange(e.target.value);
           }}
           required
         />
