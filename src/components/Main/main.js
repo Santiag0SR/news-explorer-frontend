@@ -1,6 +1,5 @@
 import "./main.css";
 import NewsCard from "../NewsCard/newscard";
-import SavedNews from "../SavedNews/savednews";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { cards, savedCards } from "../../utils/testCards";
