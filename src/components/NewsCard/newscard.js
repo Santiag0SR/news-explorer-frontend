@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./newscard.css";
 
 let savedCardList = [];
 
-function NewsCard({ card, onCardSave, setSavedCards }) {
+function NewsCard({ card, onCardSave, setSavedCards, onCardDelete }) {
   const [saved, setSaved] = useState(false);
+  const location = useLocation();
+
+  function handleDeleteClick() {
+    onCardDelete(card);
+  }
 
   function handleSaveClick() {
     if (saved) {
@@ -37,12 +43,25 @@ function NewsCard({ card, onCardSave, setSavedCards }) {
 
   return (
     <article className="card">
-      <button
-        className={cardSaveButtonClassName}
-        type="button"
-        onClick={handleSaveClick}
-        title="hello"
-      />
+      {location.pathname === "/saved-news" ? (
+        <>
+          <button
+            className="savednews-card__delete-button"
+            type="button"
+            onClick={handleDeleteClick}
+            title="hello"
+          />
+          <p className="savednews-card__keyword">Nature</p>
+        </>
+      ) : (
+        <button
+          className={cardSaveButtonClassName}
+          type="button"
+          onClick={handleSaveClick}
+          title="hello"
+        />
+      )}
+
       <img className="card__img" src={card.urlToImage} alt={card.title} />
       <div className="card__text-container">
         <p className="card__date">{card.publishedAt}</p>

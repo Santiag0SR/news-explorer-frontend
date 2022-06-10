@@ -1,6 +1,6 @@
 import "./footer.css";
-import github_icon from "../../images/giticon.png";
-import facebook_icon from "../../images/facebookicon.png";
+import github_icon from "../../images/giticon.svg";
+import facebook_icon from "../../images/facebookicon.svg";
 import { Link } from "react-router-dom";
 
 function Footer() {
@@ -15,17 +15,31 @@ function Footer() {
           <Link to={"/"} className="footer__link">
             Home
           </Link>
-          <a className="footer__link">Practicum by Yandex</a>
+          <a
+            className="footer__link"
+            href={"https://practicum.com/"}
+            target="_blank"
+          >
+            Practicum by Yandex
+          </a>
         </div>
         <div className="footer__icons">
-          <a className="footer__link">
+          <a
+            className="footer__link"
+            href={"https://github.com"}
+            target="_blank"
+          >
             <img
               className="footer__icon"
               alt="github icon"
               src={github_icon}
             ></img>
           </a>
-          <a className="footer__link">
+          <a
+            className="footer__link"
+            href={"https://www.facebook.com/"}
+            target="_blank"
+          >
             <img
               className="footer__icon"
               alt="facebook icon"

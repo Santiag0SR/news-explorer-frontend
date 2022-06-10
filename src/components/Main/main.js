@@ -3,9 +3,10 @@ import NewsCard from "../NewsCard/newscard";
 import SavedNews from "../SavedNews/savednews";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import { cards, savedCards } from "../../utils/testCards";
 
 function Main({
-  cards,
+  // cards, TO BE ADDED WHEN BACKEND
   onCardSave,
   keyword,
   onShowMore,
@@ -16,8 +17,8 @@ function Main({
   const location = useLocation();
 
   // This is just temporary until backend is added
-  const [savedCards, setSavedCards] = useState([]);
-  const newSavedCards = JSON.parse(localStorage.getItem("savedCards"));
+  // const [savedCards, setSavedCards] = useState([]);
+  // const newSavedCards = JSON.parse(localStorage.getItem("savedCards"));
 
   function handleDeleteClick() {}
 
@@ -29,11 +30,13 @@ function Main({
           <section className="elements">
             {cards.map((card) => (
               <NewsCard
-                key={card.url}
+                key={card._id}
                 card={card}
-                setSavedCards={setSavedCards}
-                savedCards={savedCards}
+                onDeleteClick={handleDeleteClick}
+                // setSavedCards={setSavedCards}
+                // savedCards={savedCards}
                 onCardSave={onCardSave}
+                onCardDelete={onCardDelete}
               />
             ))}
           </section>
@@ -47,15 +50,17 @@ function Main({
           </button>
         </>
       )}
-      {location.pathname === "/saved-news" &&
-        (newSavedCards !== null ? (
+      {
+        location.pathname === "/saved-news" && (
+          // &&
+          //   (newSavedCards !== null ?
           <>
-            {newSavedCards !== null && (
-              <section className="elements">
-                {newSavedCards.map((savedCard) => (
-                  <SavedNews
-                    key={savedCard.url}
-                    savedCard={savedCard}
+            {savedCards !== null && (
+              <section className="elements elements__saved-news">
+                {savedCards.map((card) => (
+                  <NewsCard
+                    key={card._id}
+                    card={card}
                     onDeleteClick={handleDeleteClick}
                     onCardDelete={onCardDelete}
                   />
@@ -63,9 +68,11 @@ function Main({
               </section>
             )}
           </>
-        ) : (
-          <p className="content__title"> NOTHING SAVED</p>
-        ))}
+        )
+        // : (
+        //   <p className="content__title"> NOTHING SAVED</p>
+        // ))
+      }
     </main>
   );
 }

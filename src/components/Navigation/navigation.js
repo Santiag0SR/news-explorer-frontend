@@ -42,6 +42,7 @@ function Navigation(props) {
           >
             <img
               className="navigation__menu-button"
+              alt="navigation-menu-button"
               src={
                 location.pathname === "/saved-news"
                   ? props.showMobileMenu

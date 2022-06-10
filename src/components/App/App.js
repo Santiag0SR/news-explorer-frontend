@@ -29,44 +29,39 @@ function App() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("articles") !== null) {
-      setSearching(true);
-      setNews(JSON.parse(localStorage.getItem("articles")));
-    }
-  }, []);
+  // useEffect(() => {}, []);
 
   const handleSearchSubmit = (search) => {
-    setSearching(false);
-    setNotFound(false);
-    setIsLoading(true);
-    setNumberCards("3");
-    let keyword = search;
-    localStorage.setItem("keyword", search);
-    api
-      .getNewsCards({ keyword, numberCards })
-      .then((res) => {
-        if (res.totalResults === 0) {
-          setNotFound(true);
-          localStorage.removeItem("articles");
-        } else {
-          setNotFound(false);
-          localStorage.setItem("articles", JSON.stringify(res.articles));
-          setNews(JSON.parse(localStorage.getItem("articles")));
-          localStorage.setItem("resultsNumber", res.totalResults);
-          const totalResults = localStorage.getItem("resultsNumber");
-          if (totalResults < parseInt(numberCards)) {
-            setIsDisabled(true);
-          } else setIsDisabled(false);
-        }
-      })
-      .catch((err) => {
-        console.log(`Error:${err}`);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setSearching(true);
-      });
+    // setSearching(false);
+    // setNotFound(false);
+    // setIsLoading(true);
+    // setNumberCards("3");
+    // let keyword = search;
+    // localStorage.setItem("keyword", search);
+    // api
+    //   .getNewsCards({ keyword, numberCards })
+    //   .then((res) => {
+    //     if (res.totalResults === 0) {
+    //       setNotFound(true);
+    //       localStorage.removeItem("articles");
+    //     } else {
+    //       setNotFound(false);
+    //       localStorage.setItem("articles", JSON.stringify(res.articles));
+    //       setNews(JSON.parse(localStorage.getItem("articles")));
+    //       localStorage.setItem("resultsNumber", res.totalResults);
+    //       const totalResults = localStorage.getItem("resultsNumber");
+    //       if (totalResults < parseInt(numberCards)) {
+    //         setIsDisabled(true);
+    //       } else setIsDisabled(false);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(`Error:${err}`);
+    //   })
+    //   .finally(() => {
+    //     setIsLoading(false);
+    //     setSearching(true);
+    //   });
   };
 
   function handleCardSave(card) {
@@ -222,14 +217,14 @@ function App() {
               {notFound && <NotFound />}
 
               {isLoading && <Preloader />}
-              {searching && !notFound && (
-                <Main
-                  cards={news}
-                  onCardSave={handleCardSave}
-                  onShowMore={handleShowMoreButton}
-                  isDisabled={isDisabled}
-                />
-              )}
+              {/* {searching && !notFound && ( */}
+              <Main
+                cards={news}
+                onCardSave={handleCardSave}
+                onShowMore={handleShowMoreButton}
+                isDisabled={isDisabled}
+              />
+              {/* )} */}
 
               <About />
             </>

@@ -37,25 +37,7 @@ function SignUp(props) {
     >
       <form className="form" onSubmit={handleSubmit}>
         <h2 className="form__title">Sign Up</h2>
-        <p className="form__subtitle">User</p>
-        <input
-          className="form__input"
-          id="user-signup-input"
-          name="user"
-          type="text"
-          placeholder="Enter user"
-          value={user}
-          onChange={(e) => {
-            setUser(e.target.value);
-          }}
-          required
-        />
-        <span
-          id="email-input-error"
-          className="form__error from__error_visible"
-        >
-          as dasd as
-        </span>
+
         <p className="form__subtitle">Email</p>
         <input
           className="form__input"
@@ -86,6 +68,25 @@ function SignUp(props) {
         />
         <span
           id="password-input-error"
+          className="form__error from__error_visible"
+        >
+          as dasd as
+        </span>
+        <p className="form__subtitle">Username</p>
+        <input
+          className="form__input"
+          id="user-signup-input"
+          name="user"
+          type="text"
+          placeholder="Enter user"
+          value={user}
+          onChange={(e) => {
+            setUser(e.target.value);
+          }}
+          required
+        />
+        <span
+          id="email-input-error"
           className="form__error from__error_visible"
         >
           as dasd as
