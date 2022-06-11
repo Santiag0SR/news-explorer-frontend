@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./newscard.css";
+import dateFormat from "dateformat";
 
 let savedCardList = [];
 
 function NewsCard({ card, onCardSave, setSavedCards, onCardDelete }) {
   const [saved, setSaved] = useState(false);
   const location = useLocation();
+
+  const newDateCard = dateFormat(`${card.publishedAt}`, "mmmm dS, yyyy");
 
   function handleDeleteClick() {
     onCardDelete(card);
@@ -64,7 +67,7 @@ function NewsCard({ card, onCardSave, setSavedCards, onCardDelete }) {
 
       <img className="card__img" src={card.urlToImage} alt={card.title} />
       <div className="card__text-container">
-        <p className="card__date">{card.publishedAt}</p>
+        <p className="card__date">{newDateCard}</p>
         <h2 className="card__title">{card.title} </h2>
         <p className="card__text">{card.content}</p>
         <p className="card__source">{card.source.name}</p>
