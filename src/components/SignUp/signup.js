@@ -1,39 +1,46 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import PopupWithForm from "../PopupWithForm/popupwithform";
 
 function SignUp(props) {
-  const [user, setUser] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isDisabled, setDisabled] = useState(true);
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
 
-  // TO ADD WHEN BACKEND
-  // const handleChange = (e) => {
-  //   console.log(e);
-  //   if (!e) {
-  //     console.log(isDisabled);
-  //     setDisabled(true);
-  //   } else {
-  //     setDisabled(false);
-  //   }
-  // };
+  const handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
+
+  const resetForm = useCallback(
+    (newValues = {}, newErrors = {}, newIsValid = false) => {
+      setValues(newValues);
+      setErrors(newErrors);
+      setIsValid(newIsValid);
+    },
+    [setValues, setErrors, setIsValid]
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onSignup(user, email, password);
-    setEmail("");
-    setPassword("");
-    setUser("");
+    const email = values.email;
+    const password = values.password;
+    const name = values.user;
+    props.onSignup(email, password, name);
+    resetForm();
   };
 
   return (
     <PopupWithForm
-      onSubmit={handleSubmit}
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSwitch={props.handleFormSwitch}
       modaltype={"signup-open"}
       redirectText={props.redirectText}
+      onChange={handleChange}
     >
       <form className="form" onSubmit={handleSubmit}>
         <h2 className="form__title">Sign Up</h2>
@@ -45,15 +52,17 @@ function SignUp(props) {
           name="email"
           type="email"
           placeholder="Enter email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={values.email}
+          onChange={handleChange}
           required
         />
         <span
           id="email-input-error"
-          className="form__error from__error_visible"
+          className={`form__error ${
+            errors.email === {} ? "from__error_hidden" : "from__error_visible"
+          }`}
         >
-          as dasd as
+          {errors.email}
         </span>
         <p className="form__subtitle">Password</p>
         <input
@@ -62,15 +71,21 @@ function SignUp(props) {
           name="password"
           type="password"
           placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          minLength={"8"}
+          maxLength={"20"}
+          value={values.password}
+          onChange={handleChange}
           required
         />
         <span
           id="password-input-error"
-          className="form__error from__error_visible"
+          className={`form__error ${
+            errors.password === {}
+              ? "from__error_hidden"
+              : "from__error_visible"
+          }`}
         >
-          as dasd as
+          {errors.password}
         </span>
         <p className="form__subtitle">Username</p>
         <input
@@ -79,22 +94,21 @@ function SignUp(props) {
           name="user"
           type="text"
           placeholder="Enter user"
-          value={user}
-          onChange={(e) => {
-            setUser(e.target.value);
-          }}
+          minLength={"2"}
+          maxLength={"20"}
+          value={values.user}
+          onChange={handleChange}
           required
         />
         <span
           id="email-input-error"
-          className="form__error from__error_visible"
+          className={`form__error ${
+            errors.user === {} ? "from__error_hidden" : "from__error_visible"
+          }`}
         >
-          as dasd as
+          {errors.user}
         </span>
-        <button
-          className="form__submit form__submit_active"
-          disabled={isDisabled}
-        >
+        <button className={`form__submit  ${isValid && "form__submit_active"}`}>
           Sign up
         </button>
       </form>

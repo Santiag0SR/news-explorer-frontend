@@ -93,6 +93,8 @@
   -moz-osx-font-smoothing: grayscale;
   padding: 20px 114px;
   transition: opacity 0.2s linear;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .form__submit:hover {
@@ -103,7 +105,7 @@
 .form__submit_active{
   color:#FFFFFF;
   background-color: #2F71E5;
-
+  pointer-events: all;
 }
 
 .from__redirection{
@@ -169,7 +171,7 @@
 }
 
 .from__error_visible {
-visibility: hidden;  
+visibility: visible;  
 color: #ff0000;
 }
 

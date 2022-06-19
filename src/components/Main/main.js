@@ -2,11 +2,13 @@ import "./main.css";
 import NewsCard from "../NewsCard/newscard";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import { cards, savedCards } from "../../utils/testCards";
+// import { cards, savedCards } from "../../utils/testCards";
 
 function Main({
   // cards, TO BE ADDED WHEN BACKEND
   onCardSave,
+  cards,
+  savedCards,
   keyword,
   onShowMore,
   onSaveClick,
@@ -25,11 +27,11 @@ function Main({
     <main className="content">
       {location.pathname === "/" && (
         <>
-          <h2 className="content__title">Serarch Results</h2>
+          <h2 className="content__title">Search Results</h2>
           <section className="elements">
             {cards.map((card) => (
               <NewsCard
-                key={card._id}
+                key={card.url}
                 card={card}
                 onDeleteClick={handleDeleteClick}
                 // setSavedCards={setSavedCards}
@@ -58,7 +60,7 @@ function Main({
               <section className="elements elements__saved-news">
                 {savedCards.map((card) => (
                   <NewsCard
-                    key={card._id}
+                    key={card.url}
                     card={card}
                     onDeleteClick={handleDeleteClick}
                     onCardDelete={onCardDelete}

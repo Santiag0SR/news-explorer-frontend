@@ -1,20 +1,39 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import PopupWithForm from "../PopupWithForm/popupwithform";
 
 function SignIn(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
+
+  const handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
+
+  const resetForm = useCallback(
+    (newValues = {}, newErrors = {}, newIsValid = false) => {
+      setValues(newValues);
+      setErrors(newErrors);
+      setIsValid(newIsValid);
+    },
+    [setValues, setErrors, setIsValid]
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const email = values.email;
+    const password = values.password;
     props.onSignin(email, password);
-    setEmail("");
-    setPassword("");
+    resetForm();
   };
 
   return (
     <PopupWithForm
-      onSubmit={handleSubmit}
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSwitch={props.handleFormSwitch}
@@ -30,14 +49,18 @@ function SignIn(props) {
           name="email"
           type="email"
           placeholder="Enter email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={values.email}
+          onChange={handleChange}
+          required
         />
         <span
           id="email-input-error"
-          className="form__error from__error_visible"
+          c
+          className={`form__error ${
+            errors.email === {} ? "from__error_hidden" : "from__error_visible"
+          }`}
         >
-          as dasd as
+          {errors.email}
         </span>
         <p className="form__subtitle">Password</p>
         <input
@@ -46,16 +69,25 @@ function SignIn(props) {
           name="password"
           type="password"
           placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          minLength={"8"}
+          maxLength={"20"}
+          value={values.password}
+          onChange={handleChange}
+          required
         />
         <span
           id="password-input-error"
-          className="form__error from__error_visible"
+          className={`form__error ${
+            errors.password === {}
+              ? "from__error_hidden"
+              : "from__error_visible"
+          }`}
         >
-          as dasd as
+          {errors.password}
         </span>
-        <button className="form__submit form__submit_active">Sign in</button>
+        <button className={`form__submit  ${isValid && "form__submit_active"}`}>
+          Sign in
+        </button>
       </form>
     </PopupWithForm>
   );

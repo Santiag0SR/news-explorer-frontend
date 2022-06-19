@@ -13,6 +13,7 @@ import SignIn from "../SignIn/signin";
 import SignUp from "../SignUp/signup";
 import Preloader from "../Preloader/preloader";
 import NotFound from "../NotFound/notfound";
+import { register, login } from "../../utils/MainApi";
 
 function App() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
@@ -29,39 +30,37 @@ function App() {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {}, []);
-
   const handleSearchSubmit = (search) => {
-    // setSearching(false);
-    // setNotFound(false);
-    // setIsLoading(true);
-    // setNumberCards("3");
-    // let keyword = search;
-    // localStorage.setItem("keyword", search);
-    // api
-    //   .getNewsCards({ keyword, numberCards })
-    //   .then((res) => {
-    //     if (res.totalResults === 0) {
-    //       setNotFound(true);
-    //       localStorage.removeItem("articles");
-    //     } else {
-    //       setNotFound(false);
-    //       localStorage.setItem("articles", JSON.stringify(res.articles));
-    //       setNews(JSON.parse(localStorage.getItem("articles")));
-    //       localStorage.setItem("resultsNumber", res.totalResults);
-    //       const totalResults = localStorage.getItem("resultsNumber");
-    //       if (totalResults < parseInt(numberCards)) {
-    //         setIsDisabled(true);
-    //       } else setIsDisabled(false);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(`Error:${err}`);
-    //   })
-    //   .finally(() => {
-    //     setIsLoading(false);
-    //     setSearching(true);
-    //   });
+    setSearching(false);
+    setNotFound(false);
+    setIsLoading(true);
+    setNumberCards("3");
+    let keyword = search;
+    localStorage.setItem("keyword", search);
+    api
+      .getNewsCards({ keyword, numberCards })
+      .then((res) => {
+        if (res.totalResults === 0) {
+          setNotFound(true);
+          localStorage.removeItem("articles");
+        } else {
+          setNotFound(false);
+          localStorage.setItem("articles", JSON.stringify(res.articles));
+          setNews(JSON.parse(localStorage.getItem("articles")));
+          localStorage.setItem("resultsNumber", res.totalResults);
+          const totalResults = localStorage.getItem("resultsNumber");
+          if (totalResults < parseInt(numberCards)) {
+            setIsDisabled(true);
+          } else setIsDisabled(false);
+        }
+      })
+      .catch((err) => {
+        console.log(`Error:${err}`);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setSearching(true);
+      });
   };
 
   function handleCardSave(card) {
@@ -97,54 +96,54 @@ function App() {
 
   const handleSignInSubmit = (email, password) => {
     console.log(email, password);
-    setIsLoggedin(true);
-    closeAllPopups();
-    navigate("/saved-news");
-    // TO ADD WHEN BACKEND ADDED
-    // authorize(email, password)
-    //   .then((res) => {
-    //     if (res.token) {
-    //       handleLogin();
-    //       navigate("/");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     if (err === 400) {
-    //       console.log("One or more of the fields were not provided");
-    //     } else if (err === 401) {
-    //       console.log(
-    //         "the user with the specified email or password was not found"
-    //       );
-    //     }
-    //     setStatus("failed");
-    //     setTooltipOpen(true);
-    //   });
+    login(email, password)
+      .then((res) => {
+        if (res.token) {
+          // handleLogin();
+          navigate("/saved-news");
+          closeAllPopups();
+          setIsLoggedin(true);
+        }
+      })
+      .catch((err) => {
+        if (err === 400) {
+          console.log("One or more of the fields were not provided");
+        } else if (err === 401) {
+          console.log(
+            "the user with the specified email or password was not found"
+          );
+        }
+        // setStatus("failed");
+        // setTooltipOpen(true);
+      });
   };
 
-  const handleSignUpSubmit = (user, email, password) => {
-    console.log(user, email, password);
+  const handleSignUpSubmit = (email, password, name) => {
+    console.log(email, password, name);
     setIsSignUpOpen(false);
     setShowMobileMenu(false);
-    setIsSignInOpen(true);
-    // TO ADD WHEN BACKEND ADDED
-    // authorize(email, password)
-    //   .then((res) => {
-    //     if (res.token) {
-    //       handleLogin();
-    //       navigate("/");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     if (err === 400) {
-    //       console.log("One or more of the fields were not provided");
-    //     } else if (err === 401) {
-    //       console.log(
-    //         "the user with the specified email or password was not found"
-    //       );
-    //     }
-    //     setStatus("failed");
-    //     setTooltipOpen(true);
-    //   });
+    register(email, password, name)
+      .then((res) => {
+        if (res.data._id) {
+          console.log("res OK");
+          // setStatus("success");
+          setIsSignInOpen(true);
+        } else {
+          console.log("Something went wrong");
+          // setStatus("failed");
+        }
+      })
+      .catch((err) => {
+        if (err === 400) {
+          console.log("One of the fields was filled in incorrectly");
+        } else {
+          console.log(err);
+        }
+        // setStatus("failed");
+      })
+      .finally(() => {
+        // setTooltipOpen(true);
+      });
   };
 
   function toggleMenu() {
@@ -215,17 +214,15 @@ function App() {
               />
               <Header handleSearchSubmit={handleSearchSubmit} />
               {notFound && <NotFound />}
-
               {isLoading && <Preloader />}
-              {/* {searching && !notFound && ( */}
-              <Main
-                cards={news}
-                onCardSave={handleCardSave}
-                onShowMore={handleShowMoreButton}
-                isDisabled={isDisabled}
-              />
-              {/* )} */}
-
+              {searching && !notFound && (
+                <Main
+                  cards={news}
+                  onCardSave={handleCardSave}
+                  onShowMore={handleShowMoreButton}
+                  isDisabled={isDisabled}
+                />
+              )}
               <About />
             </>
           }
@@ -245,7 +242,7 @@ function App() {
               <SavedNewsHeader />
               {news !== null && (
                 <Main
-                  cards={news}
+                  savedCards={news}
                   onShowMore={handleShowMoreButton}
                   onCardDelete={handleCardDelete}
                 />
