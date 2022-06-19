@@ -1,43 +1,33 @@
 import { useState, useCallback } from "react";
 import PopupWithForm from "../PopupWithForm/popupwithform";
 
-function SignIn(props) {
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false);
-
+function SignIn({
+  onSignin,
+  isOpen,
+  onClose,
+  handleFormSwitch,
+  redirectText,
+  serverError,
+  values,
+  errors,
+  isValid,
+  onFormChange,
+}) {
   const handleChange = (event) => {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-    setValues({ ...values, [name]: value });
-    setErrors({ ...errors, [name]: target.validationMessage });
-    setIsValid(target.closest("form").checkValidity());
+    onFormChange(event);
   };
-
-  const resetForm = useCallback(
-    (newValues = {}, newErrors = {}, newIsValid = false) => {
-      setValues(newValues);
-      setErrors(newErrors);
-      setIsValid(newIsValid);
-    },
-    [setValues, setErrors, setIsValid]
-  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const email = values.email;
-    const password = values.password;
-    props.onSignin(email, password);
-    resetForm();
+    onSignin(values.email, values.password);
   };
 
   return (
     <PopupWithForm
-      isOpen={props.isOpen}
-      onClose={props.onClose}
-      onSwitch={props.handleFormSwitch}
-      redirectText={props.redirectText}
+      isOpen={isOpen}
+      onClose={onClose}
+      onSwitch={handleFormSwitch}
+      redirectText={redirectText}
       modaltype={"signin-open"}
     >
       <form className="form" onSubmit={handleSubmit}>
@@ -49,13 +39,12 @@ function SignIn(props) {
           name="email"
           type="email"
           placeholder="Enter email"
-          value={values.email}
+          value={!values.email ? "" : values.email}
           onChange={handleChange}
           required
         />
         <span
           id="email-input-error"
-          c
           className={`form__error ${
             errors.email === {} ? "from__error_hidden" : "from__error_visible"
           }`}
@@ -71,7 +60,7 @@ function SignIn(props) {
           placeholder="Enter password"
           minLength={"8"}
           maxLength={"20"}
-          value={values.password}
+          value={!values.password ? "" : values.password}
           onChange={handleChange}
           required
         />
@@ -84,6 +73,14 @@ function SignIn(props) {
           }`}
         >
           {errors.password}
+        </span>
+        <span
+          id="server-error"
+          className={`form__error form__error_type_server ${
+            serverError === {} ? "from__error_hidden" : "from__error_visible"
+          }`}
+        >
+          {serverError}
         </span>
         <button className={`form__submit  ${isValid && "form__submit_active"}`}>
           Sign in

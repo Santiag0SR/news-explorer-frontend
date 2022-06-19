@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import "./App.css";
@@ -11,6 +11,7 @@ import SavedNewsHeader from "../SavedNewsHeader/savednewsheader";
 import api from "../../utils/newsapi";
 import SignIn from "../SignIn/signin";
 import SignUp from "../SignUp/signup";
+import ConfirmationTooltip from "../ConfirmationTooltip/confirmationtooltip";
 import Preloader from "../Preloader/preloader";
 import NotFound from "../NotFound/notfound";
 import { register, login } from "../../utils/MainApi";
@@ -18,6 +19,7 @@ import { register, login } from "../../utils/MainApi";
 function App() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [popupRedirectText, setPopupRedirectText] = useState("");
   const [news, setNews] = useState([]);
   const [numberCards, setNumberCards] = useState("3");
@@ -27,6 +29,10 @@ function App() {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
+  const [serverError, setSeverError] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
   const navigate = useNavigate();
 
@@ -94,6 +100,17 @@ function App() {
     }
   };
 
+  function handleTooltipOpen() {
+    closeAllPopups();
+    setIsTooltipOpen(true);
+  }
+
+  // function handleSignUpOpen() {
+  //   closeAllPopups();
+  //   setIsSignUpOpen(true);
+  //   resetForm();
+  // }
+
   const handleSignInSubmit = (email, password) => {
     console.log(email, password);
     login(email, password)
@@ -103,14 +120,19 @@ function App() {
           navigate("/saved-news");
           closeAllPopups();
           setIsLoggedin(true);
+          setSeverError("");
         }
       })
       .catch((err) => {
         if (err === 400) {
+          setSeverError("One or more of the fields were not provided");
           console.log("One or more of the fields were not provided");
         } else if (err === 401) {
+          setSeverError(
+            "The user with the specified email or password was not found"
+          );
           console.log(
-            "the user with the specified email or password was not found"
+            "The user with the specified email or password was not found"
           );
         }
         // setStatus("failed");
@@ -120,29 +142,29 @@ function App() {
 
   const handleSignUpSubmit = (email, password, name) => {
     console.log(email, password, name);
-    setIsSignUpOpen(false);
     setShowMobileMenu(false);
     register(email, password, name)
       .then((res) => {
         if (res.data._id) {
           console.log("res OK");
-          // setStatus("success");
-          setIsSignInOpen(true);
+          handleTooltipOpen();
+          resetForm();
+          setSeverError("");
         } else {
           console.log("Something went wrong");
-          // setStatus("failed");
         }
       })
       .catch((err) => {
         if (err === 400) {
           console.log("One of the fields was filled in incorrectly");
+          setSeverError("One of the fields was filled in incorrectly");
+        } else if (err === 409) {
+          console.log("This email or user is not available");
+          setSeverError("This email or user is not available");
         } else {
           console.log(err);
+          setSeverError(err);
         }
-        // setStatus("failed");
-      })
-      .finally(() => {
-        // setTooltipOpen(true);
       });
   };
 
@@ -163,9 +185,12 @@ function App() {
   }
 
   function handleSingInClick() {
+    closeAllPopups();
     setShowMobileMenu(false);
     setIsSignInOpen(true);
     setPopupRedirectText("Sign up");
+    resetForm();
+    setSeverError("");
   }
 
   function handleFormSwitch() {
@@ -173,17 +198,40 @@ function App() {
       setIsSignInOpen(false);
       setIsSignUpOpen(true);
       setPopupRedirectText("Sign in");
+      resetForm();
+      setSeverError("");
     } else if (isSignUpOpen) {
       setIsSignUpOpen(false);
       setIsSignInOpen(true);
       setPopupRedirectText("Sign up");
+      resetForm();
+      setSeverError("");
     }
   }
+
+  function handleFormChange(event) {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  }
+
+  const resetForm = useCallback(
+    (newValues = {}, newErrors = {}, newIsValid = false) => {
+      setValues(newValues);
+      setErrors(newErrors);
+      setIsValid(newIsValid);
+    }
+  );
 
   function closeAllPopups() {
     setIsSignInOpen(false);
     setIsSignUpOpen(false);
     setShowMobileMenu(false);
+    setIsTooltipOpen(false);
+    setSeverError("");
   }
 
   useEffect(() => {
@@ -258,6 +306,12 @@ function App() {
         onSignin={handleSignInSubmit}
         redirectText={popupRedirectText}
         handleFormSwitch={handleFormSwitch}
+        serverError={serverError}
+        values={values}
+        errors={errors}
+        isValid={isValid}
+        onFormChange={handleFormChange}
+        resetForm={resetForm}
       />
       <SignUp
         isOpen={isSignUpOpen}
@@ -265,6 +319,17 @@ function App() {
         onSignup={handleSignUpSubmit}
         redirectText={popupRedirectText}
         handleFormSwitch={handleFormSwitch}
+        serverError={serverError}
+        values={values}
+        errors={errors}
+        isValid={isValid}
+        onFormChange={handleFormChange}
+        resetForm={resetForm}
+      />
+      <ConfirmationTooltip
+        isOpen={isTooltipOpen}
+        onClose={closeAllPopups}
+        onClick={handleSingInClick}
       />
     </>
   );

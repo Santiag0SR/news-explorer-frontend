@@ -170,6 +170,12 @@
   padding: 0 0 10px 0;
 }
 
+.form__error_type_server{
+  padding:7px 0 0 0;
+  margin:0;
+  text-align: center;
+}
+
 .from__error_visible {
 visibility: visible;  
 color: #ff0000;
