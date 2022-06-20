@@ -8,6 +8,7 @@ import Main from "../Main/main";
 import About from "../About/about";
 import Footer from "../Footer/footer";
 import SavedNewsHeader from "../SavedNewsHeader/savednewsheader";
+import ProtectedRoute from "../ProtectedRoute/protectedroute";
 import api from "../../utils/newsapi";
 import SignIn from "../SignIn/signin";
 import SignUp from "../SignUp/signup";
@@ -104,6 +105,10 @@ function App() {
     closeAllPopups();
     setIsTooltipOpen(true);
   }
+
+  // function handleSingInOpen() {
+  //   setIsSignInOpen(true);
+  // }
 
   // function handleSignUpOpen() {
   //   closeAllPopups();
@@ -278,7 +283,7 @@ function App() {
         <Route
           path="/saved-news"
           element={
-            <>
+            <ProtectedRoute isLoggedin={isLoggedin}>
               <Navigation
                 showMobileMenu={showMobileMenu}
                 toggleMenu={toggleMenu}
@@ -295,7 +300,7 @@ function App() {
                   onCardDelete={handleCardDelete}
                 />
               )}
-            </>
+            </ProtectedRoute>
           }
         />
       </Routes>

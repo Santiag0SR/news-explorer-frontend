@@ -8,6 +8,7 @@ import closeMenuButton from "../../images/close_button.svg";
 
 function Navigation(props) {
   const location = useLocation();
+  const name = localStorage.getItem("name");
 
   return (
     <div
@@ -93,7 +94,7 @@ function Navigation(props) {
                     : ""
                 }`}
               >
-                Elise
+                {name}
                 <img
                   className={"logout-icon"}
                   alt="logout"
