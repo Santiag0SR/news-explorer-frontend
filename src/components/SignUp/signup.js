@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PopupWithForm from "../PopupWithForm/popupwithform";
 
 function SignUp({
@@ -32,7 +31,6 @@ function SignUp({
     >
       <form className="form" onSubmit={handleSubmit}>
         <h2 className="form__title">Sign Up</h2>
-
         <p className="form__subtitle">Email</p>
         <input
           className="form__input"

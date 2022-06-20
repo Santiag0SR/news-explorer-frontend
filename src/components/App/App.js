@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import "./App.css";
@@ -15,7 +15,15 @@ import SignUp from "../SignUp/signup";
 import ConfirmationTooltip from "../ConfirmationTooltip/confirmationtooltip";
 import Preloader from "../Preloader/preloader";
 import NotFound from "../NotFound/notfound";
-import { register, login } from "../../utils/MainApi";
+import {
+  register,
+  login,
+  getUser,
+  saveCard,
+  getSavedCards,
+  deleteCard,
+} from "../../utils/MainApi";
+import { CurrentUserContext } from "../../contexts/currentusercontext";
 
 function App() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
@@ -23,6 +31,7 @@ function App() {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [popupRedirectText, setPopupRedirectText] = useState("");
   const [news, setNews] = useState([]);
+  const [savedNews, setSavedNews] = useState([]);
   const [numberCards, setNumberCards] = useState("3");
   const [isLoading, setIsLoading] = useState(false);
   const [searching, setSearching] = useState(false);
@@ -34,6 +43,7 @@ function App() {
   const [errors, setErrors] = useState({});
   const [serverError, setSeverError] = useState("");
   const [isValid, setIsValid] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
   const navigate = useNavigate();
 
@@ -72,23 +82,38 @@ function App() {
 
   function handleCardSave(card) {
     let keyword = localStorage.getItem("keyword");
-    console.log(keyword);
-    console.log(card);
+    if (isLoggedin) {
+      saveCard({
+        keyword,
+        title: card.title,
+        text: card.content,
+        date: card.publishedAt,
+        source: card.source.name,
+        link: card.url,
+        image: card.urlToImage,
+      })
+        .then((newCard) => {
+          console.log("new article saved");
+          setSavedNews([...savedNews, newCard.data]);
+        })
+        .catch((err) => console.error(`Problem saving new article: ${err}`));
+    } else {
+      handleSingInClick();
+    }
     // add when set up personal api
     // api.saveCard(card, keyword).then((newCard) => setNews([newCard, ...news]));
   }
 
   function handleCardDelete(card) {
-    console.log(card);
-    // add when set up personal api
-    // api.saveCard(card, keyword).then((newCard) => setNews([newCard, ...news]));
+    deleteCard(card._id).then(() => {
+      setSavedNews(savedNews.filter((item) => item !== card));
+    });
   }
 
   const handleShowMoreButton = () => {
     const totalResults = localStorage.getItem("resultsNumber");
 
     if (totalResults < parseInt(numberCards)) {
-      console.log("no more results");
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
@@ -106,22 +131,10 @@ function App() {
     setIsTooltipOpen(true);
   }
 
-  // function handleSingInOpen() {
-  //   setIsSignInOpen(true);
-  // }
-
-  // function handleSignUpOpen() {
-  //   closeAllPopups();
-  //   setIsSignUpOpen(true);
-  //   resetForm();
-  // }
-
   const handleSignInSubmit = (email, password) => {
-    console.log(email, password);
     login(email, password)
       .then((res) => {
         if (res.token) {
-          // handleLogin();
           navigate("/saved-news");
           closeAllPopups();
           setIsLoggedin(true);
@@ -140,13 +153,10 @@ function App() {
             "The user with the specified email or password was not found"
           );
         }
-        // setStatus("failed");
-        // setTooltipOpen(true);
       });
   };
 
   const handleSignUpSubmit = (email, password, name) => {
-    console.log(email, password, name);
     setShowMobileMenu(false);
     register(email, password, name)
       .then((res) => {
@@ -184,7 +194,7 @@ function App() {
   }
 
   function handleLogoutClick() {
-    console.log("hello");
+    localStorage.removeItem("jwt");
     setIsLoggedin(false);
     navigate("/");
   }
@@ -231,6 +241,32 @@ function App() {
     }
   );
 
+  const handleLogin = () => {
+    setIsLoggedin(true);
+  };
+
+  function handleTokenCheck() {
+    if (localStorage.getItem("jwt")) {
+      const jwt = localStorage.getItem("jwt");
+      getUser()
+        .then((res) => {
+          if (res) {
+            handleLogin();
+            navigate("/");
+          } else {
+            localStorage.removeItem("jwt");
+          }
+        })
+        .catch((err) => {
+          if (err === 400) {
+            console.log("Token not provided or provided in the wrong format");
+          } else if (err === 401) {
+            console.log("The provided token is invalid ");
+          }
+        });
+    }
+  }
+
   function closeAllPopups() {
     setIsSignInOpen(false);
     setIsSignUpOpen(false);
@@ -250,8 +286,28 @@ function App() {
     return () => document.removeEventListener("keydown", closeByEscape);
   }, []);
 
+  useEffect(() => {
+    handleTokenCheck();
+  }, []);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt && isLoggedin) {
+      getUser()
+        .then((data) => {
+          setCurrentUser(data.data);
+        })
+        .catch((err) => console.log(`Problem fetching profile data: ${err}`));
+      getSavedCards()
+        .then((data) => {
+          setSavedNews(data);
+        })
+        .catch((err) => console.log(`Problem fetching profile data: ${err}`));
+    }
+  }, [isLoggedin]);
+
   return (
-    <>
+    <CurrentUserContext.Provider value={currentUser}>
       <Routes>
         <Route
           path="/"
@@ -272,6 +328,7 @@ function App() {
                 <Main
                   cards={news}
                   onCardSave={handleCardSave}
+                  isLoggedin={isLoggedin}
                   onShowMore={handleShowMoreButton}
                   isDisabled={isDisabled}
                 />
@@ -292,10 +349,10 @@ function App() {
                 isLoggedin={isLoggedin}
                 onLogout={handleLogoutClick}
               />
-              <SavedNewsHeader />
-              {news !== null && (
+              <SavedNewsHeader isLoggedin={isLoggedin} savedNews={savedNews} />
+              {savedNews !== null && (
                 <Main
-                  savedCards={news}
+                  savedCards={savedNews}
                   onShowMore={handleShowMoreButton}
                   onCardDelete={handleCardDelete}
                 />
@@ -336,7 +393,7 @@ function App() {
         onClose={closeAllPopups}
         onClick={handleSingInClick}
       />
-    </>
+    </CurrentUserContext.Provider>
   );
 }
 

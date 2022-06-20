@@ -38,7 +38,6 @@ export const login = (email, password) => {
       console.log(info);
       if (info.token) {
         localStorage.setItem("jwt", info.token);
-        localStorage.setItem("name", info.data.name);
         return info;
       } else {
         return;
@@ -46,34 +45,69 @@ export const login = (email, password) => {
     });
 };
 
-// // export const getContent = (token) => {
-// //   return fetch(`${BASE_URL}/users/me`, {
-// //     method: "GET",
-// //     headers: {
-// //       Accept: "application/json",
-// //       "Content-Type": "application/json",
-// //       Authorization: `Bearer ${token}`,
-// //     },
-// //   })
-// //     .then(checkErrors)
-// //     .then((data) => data);
-// // };
+export const getUser = () => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then(checkErrors)
+    .then((data) => data);
+};
 
-// // getCards() {
-// //     return fetch(`${this.baseUrl}/cards`, {
-// //       headers: {
-// //         authorization: `Bearer ${localStorage.getItem("jwt")}`,
-// //         "Content-Type": "application/json",
-// //       },
-// //     }).then((res) => this._checkErrors(res));
-// //   }
+export const saveCard = ({
+  keyword,
+  title,
+  text,
+  date,
+  source,
+  link,
+  image,
+}) => {
+  return fetch(`${BASE_URL}/articles`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      keyword,
+      title,
+      text,
+      date,
+      source,
+      link,
+      image,
+    }),
+  })
+    .then(checkErrors)
+    .then((res) => res);
+};
 
-// // deleteCard(cardId) {
-// //     return fetch(`${this.baseUrl}/cards/${cardId}`, {
-// //       method: "DELETE",
-// //       headers: {
-// //         authorization: `Bearer ${localStorage.getItem("jwt")}`,
-// //         "Content-Type": "application/json",
-// //       },
-// //     }).then((res) => this._checkErrors(res));
-// //   }
+export const getSavedCards = () => {
+  return fetch(`${BASE_URL}/articles`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
+  })
+    .then(checkErrors)
+    .then((data) => data);
+};
+
+export const deleteCard = (cardId) => {
+  return fetch(`${BASE_URL}/articles/${cardId}`, {
+    method: "DELETE",
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then(checkErrors)
+    .then((data) => data);
+};

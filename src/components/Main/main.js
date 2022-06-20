@@ -1,25 +1,17 @@
 import "./main.css";
 import NewsCard from "../NewsCard/newscard";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
-// import { cards, savedCards } from "../../utils/testCards";
 
 function Main({
-  // cards, TO BE ADDED WHEN BACKEND
   onCardSave,
   cards,
   savedCards,
-  keyword,
   onShowMore,
-  onSaveClick,
   onCardDelete,
   isDisabled,
+  isLoggedin,
 }) {
   const location = useLocation();
-
-  // This is just temporary until backend is added
-  // const [savedCards, setSavedCards] = useState([]);
-  // const newSavedCards = JSON.parse(localStorage.getItem("savedCards"));
 
   function handleDeleteClick() {}
 
@@ -34,8 +26,7 @@ function Main({
                 key={card.url}
                 card={card}
                 onDeleteClick={handleDeleteClick}
-                // setSavedCards={setSavedCards}
-                // savedCards={savedCards}
+                isLoggedin={isLoggedin}
                 onCardSave={onCardSave}
                 onCardDelete={onCardDelete}
               />
@@ -51,29 +42,22 @@ function Main({
           </button>
         </>
       )}
-      {
-        location.pathname === "/saved-news" && (
-          // &&
-          //   (newSavedCards !== null ?
-          <>
-            {savedCards !== null && (
-              <section className="elements elements__saved-news">
-                {savedCards.map((card) => (
-                  <NewsCard
-                    key={card.url}
-                    card={card}
-                    onDeleteClick={handleDeleteClick}
-                    onCardDelete={onCardDelete}
-                  />
-                ))}
-              </section>
-            )}
-          </>
-        )
-        // : (
-        //   <p className="content__title"> NOTHING SAVED</p>
-        // ))
-      }
+      {location.pathname === "/saved-news" && (
+        <>
+          {savedCards !== null && (
+            <section className="elements elements__saved-news">
+              {savedCards.map((card) => (
+                <NewsCard
+                  key={card._id}
+                  card={card}
+                  onDeleteClick={handleDeleteClick}
+                  onCardDelete={onCardDelete}
+                />
+              ))}
+            </section>
+          )}
+        </>
+      )}
     </main>
   );
 }

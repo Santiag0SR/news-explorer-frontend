@@ -1,4 +1,3 @@
-import { useState, useCallback } from "react";
 import PopupWithForm from "../PopupWithForm/popupwithform";
 
 function SignIn({
@@ -35,7 +34,7 @@ function SignIn({
         <p className="form__subtitle">Email</p>
         <input
           className="form__input"
-          id="email-input"
+          id="email-signin-input"
           name="email"
           type="email"
           placeholder="Enter email"
