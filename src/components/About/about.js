@@ -1,5 +1,5 @@
 import "./about.css";
-import about__image from "../../images/image-03.png";
+import about__image from "../../images/author.png";
 
 function About() {
   return (
