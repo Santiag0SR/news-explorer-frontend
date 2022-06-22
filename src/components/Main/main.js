@@ -53,7 +53,7 @@ function Main({
             <section className="elements elements__saved-news">
               {savedCards.map((card) => (
                 <NewsCard
-                  key={card.id}
+                  key={card._id}
                   card={card}
                   isLoggedin={isLoggedin}
                   onSaveClick={onSaveClick}

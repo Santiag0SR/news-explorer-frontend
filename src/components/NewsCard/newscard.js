@@ -65,7 +65,7 @@ function NewsCard({
           title="hello"
         />
       )}
-      <a className="card__link" href={card.url}>
+      <a className="card__link" href={!card.url ? card.link : card.url}>
         <img
           className="card__img"
           src={!card.urlToImage ? card.image : card.urlToImage}

@@ -163,10 +163,8 @@ function App() {
         }
       })
       .then(() => {
-        console.log(CardWithoutAuth);
         if (CardWithoutAuth) {
           handleCardSave(CardWithoutAuth);
-          console.log("here");
         }
       })
       .catch((err) => {

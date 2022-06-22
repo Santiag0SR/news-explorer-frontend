@@ -19,7 +19,6 @@ export const register = (email, password, name) => {
   })
     .then(checkErrors)
     .then((res) => {
-      console.log(res);
       return res;
     });
 };
