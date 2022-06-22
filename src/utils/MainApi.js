@@ -35,7 +35,6 @@ export const login = (email, password) => {
   })
     .then(checkErrors)
     .then((info) => {
-      console.log(info);
       if (info.token) {
         localStorage.setItem("jwt", info.token);
         return info;

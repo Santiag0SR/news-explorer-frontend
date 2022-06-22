@@ -3,17 +3,19 @@ import NewsCard from "../NewsCard/newscard";
 import { useLocation } from "react-router-dom";
 
 function Main({
-  onCardSave,
+  onSaveClick,
   cards,
   savedCards,
   onShowMore,
   onCardDelete,
   isDisabled,
   isLoggedin,
+  savedNews,
+  savedArticle,
+  checkSavedButton,
+  saveWithoutAuth,
 }) {
   const location = useLocation();
-
-  function handleDeleteClick() {}
 
   return (
     <main className="content">
@@ -25,10 +27,13 @@ function Main({
               <NewsCard
                 key={card.url}
                 card={card}
-                onDeleteClick={handleDeleteClick}
                 isLoggedin={isLoggedin}
-                onCardSave={onCardSave}
+                onSaveClick={onSaveClick}
                 onCardDelete={onCardDelete}
+                savedNews={savedNews}
+                savedArticle={savedArticle}
+                checkSavedButton={checkSavedButton}
+                saveWithoutAuth={saveWithoutAuth}
               />
             ))}
           </section>
@@ -48,10 +53,14 @@ function Main({
             <section className="elements elements__saved-news">
               {savedCards.map((card) => (
                 <NewsCard
-                  key={card._id}
+                  key={card.id}
                   card={card}
-                  onDeleteClick={handleDeleteClick}
+                  isLoggedin={isLoggedin}
+                  onSaveClick={onSaveClick}
                   onCardDelete={onCardDelete}
+                  savedNews={savedNews}
+                  savedArticle={savedArticle}
+                  checkSavedButton={checkSavedButton}
                 />
               ))}
             </section>

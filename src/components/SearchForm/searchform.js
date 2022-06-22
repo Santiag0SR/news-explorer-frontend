@@ -14,10 +14,8 @@ function SearchForm(props) {
   const handleMouseEvent = (e) => {
     if (e.type === "mousedown") {
       setButtonClicked(true);
-      console.log(buttonClicked);
     } else {
       setButtonClicked(false);
-      console.log(buttonClicked);
     }
   };
 

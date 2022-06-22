@@ -44,6 +44,8 @@ function App() {
   const [serverError, setSeverError] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [savedArticle, setSavedArticle] = useState({});
+  const [CardWithoutAuth, setCardWithoutAuth] = useState([]);
 
   const navigate = useNavigate();
 
@@ -80,32 +82,51 @@ function App() {
       });
   };
 
-  function handleCardSave(card) {
-    let keyword = localStorage.getItem("keyword");
+  function checkSavedButton(card) {
+    const savedArticle = savedNews.find((data) => data.link === card.url);
+    return savedArticle;
+  }
+
+  function handleSaveClick(card) {
+    const savedArticle = savedNews.find((data) => data.link === card.url);
     if (isLoggedin) {
-      saveCard({
-        keyword,
-        title: card.title,
-        text: card.content,
-        date: card.publishedAt,
-        source: card.source.name,
-        link: card.url,
-        image: card.urlToImage,
-      })
-        .then((newCard) => {
-          console.log("new article saved");
-          setSavedNews([...savedNews, newCard.data]);
-        })
-        .catch((err) => console.error(`Problem saving new article: ${err}`));
+      if (!savedArticle) {
+        handleCardSave(card);
+        setSavedArticle(savedArticle);
+      } else {
+        handleCardDelete(savedArticle);
+        setSavedArticle(savedArticle);
+      }
     } else {
       handleSingInClick();
     }
-    // add when set up personal api
-    // api.saveCard(card, keyword).then((newCard) => setNews([newCard, ...news]));
+  }
+
+  const saveWithoutAuth = (card) => {
+    setCardWithoutAuth(card);
+  };
+
+  function handleCardSave(card) {
+    let keyword = localStorage.getItem("keyword");
+    saveCard({
+      keyword,
+      title: card.title,
+      text: card.content,
+      date: card.publishedAt,
+      source: card.source.name,
+      link: card.url,
+      image: card.urlToImage,
+    })
+      .then((newCard) => {
+        console.log("new article saved");
+        setSavedNews([...savedNews, newCard.data]);
+      })
+      .catch((err) => console.error(`Problem saving new article: ${err}`));
   }
 
   function handleCardDelete(card) {
     deleteCard(card._id).then(() => {
+      console.log(" article deleted");
       setSavedNews(savedNews.filter((item) => item !== card));
     });
   }
@@ -135,10 +156,17 @@ function App() {
     login(email, password)
       .then((res) => {
         if (res.token) {
-          navigate("/saved-news");
-          closeAllPopups();
+          navigate("/");
           setIsLoggedin(true);
           setSeverError("");
+          closeAllPopups();
+        }
+      })
+      .then(() => {
+        console.log(CardWithoutAuth);
+        if (CardWithoutAuth) {
+          handleCardSave(CardWithoutAuth);
+          console.log("here");
         }
       })
       .catch((err) => {
@@ -153,6 +181,9 @@ function App() {
             "The user with the specified email or password was not found"
           );
         }
+      })
+      .finally(() => {
+        setCardWithoutAuth([]);
       });
   };
 
@@ -197,6 +228,7 @@ function App() {
     localStorage.removeItem("jwt");
     setIsLoggedin(false);
     navigate("/");
+    setSavedNews([]);
   }
 
   function handleSingInClick() {
@@ -303,6 +335,8 @@ function App() {
           setSavedNews(data);
         })
         .catch((err) => console.log(`Problem fetching profile data: ${err}`));
+    } else {
+      setSearching(false);
     }
   }, [isLoggedin]);
 
@@ -320,6 +354,7 @@ function App() {
                 onSignInClick={handleSingInClick}
                 isLoggedin={isLoggedin}
                 onLogout={handleLogoutClick}
+                checkSavedButton={checkSavedButton}
               />
               <Header handleSearchSubmit={handleSearchSubmit} />
               {notFound && <NotFound />}
@@ -327,10 +362,14 @@ function App() {
               {searching && !notFound && (
                 <Main
                   cards={news}
-                  onCardSave={handleCardSave}
+                  onSaveClick={handleSaveClick}
                   isLoggedin={isLoggedin}
                   onShowMore={handleShowMoreButton}
                   isDisabled={isDisabled}
+                  savedNews={savedNews}
+                  savedArticle={savedArticle}
+                  checkSavedButton={checkSavedButton}
+                  saveWithoutAuth={saveWithoutAuth}
                 />
               )}
               <About />
