@@ -2,19 +2,19 @@ import { useState, useEffect, useCallback, useContext } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import "./App.css";
-import Navigation from "../Navigation/navigation";
-import Header from "../Header/header";
-import Main from "../Main/main";
-import About from "../About/about";
-import Footer from "../Footer/footer";
-import SavedNewsHeader from "../SavedNewsHeader/savednewsheader";
-import ProtectedRoute from "../ProtectedRoute/protectedroute";
-import api from "../../utils/newsapi";
-import SignIn from "../SignIn/signin";
-import SignUp from "../SignUp/signup";
-import ConfirmationTooltip from "../ConfirmationTooltip/confirmationtooltip";
-import Preloader from "../Preloader/preloader";
-import NotFound from "../NotFound/notfound";
+import Navigation from "../Navigation/Navigation";
+import Header from "../Header/Header";
+import Main from "../Main/Main";
+import About from "../About/About";
+import Footer from "../Footer/Footer";
+import SavedNewsHeader from "../SavedNewsHeader/SavedNewsHeader";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import api from "../../utils/NewsApi";
+import SignIn from "../SignIn/SignIn";
+import SignUp from "../SignUp/SignUp";
+import ConfirmationTooltip from "../ConfirmationTooltip/ConfirmationTooltip";
+import Preloader from "../Preloader/Preloader";
+import NotFound from "../NotFound/NotFound";
 import {
   register,
   login,
@@ -125,10 +125,14 @@ function App() {
   }
 
   function handleCardDelete(card) {
-    deleteCard(card._id).then(() => {
-      console.log(" article deleted");
-      setSavedNews(savedNews.filter((item) => item !== card));
-    });
+    deleteCard(card._id)
+      .then(() => {
+        console.log(" article deleted");
+        setSavedNews(savedNews.filter((item) => item !== card));
+      })
+      .catch((err) => {
+        console.log(`Error:${err}`);
+      });
   }
 
   const handleShowMoreButton = () => {
@@ -140,10 +144,15 @@ function App() {
       setIsDisabled(false);
       let addnews = (3 + news.length).toString();
       const keyword = localStorage.getItem("keyword");
-      api.getNewsCards({ keyword, numberCards: addnews }).then((res) => {
-        localStorage.setItem("articles", JSON.stringify(res.articles));
-        setNews(JSON.parse(localStorage.getItem("articles")));
-      });
+      api
+        .getNewsCards({ keyword, numberCards: addnews })
+        .then((res) => {
+          localStorage.setItem("articles", JSON.stringify(res.articles));
+          setNews(JSON.parse(localStorage.getItem("articles")));
+        })
+        .catch((err) => {
+          console.log(`Error:${err}`);
+        });
     }
   };
 
@@ -282,7 +291,6 @@ function App() {
         .then((res) => {
           if (res) {
             handleLogin();
-            navigate("/");
           } else {
             localStorage.removeItem("jwt");
           }
@@ -377,7 +385,7 @@ function App() {
         <Route
           path="/saved-news"
           element={
-            <ProtectedRoute isLoggedin={isLoggedin}>
+            <ProtectedRoute onSignInClick={handleSingInClick}>
               <Navigation
                 showMobileMenu={showMobileMenu}
                 toggleMenu={toggleMenu}

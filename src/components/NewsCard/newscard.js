@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import "./newscard.css";
+import "./NewsCard.css";
 import dateFormat from "dateformat";
 
 function NewsCard({

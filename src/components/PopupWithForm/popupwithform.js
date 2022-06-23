@@ -1,4 +1,4 @@
-import "./popupwithform.css";
+import "./PopupWithForm.css";
 import closeButton from "../../images/close_button.svg";
 
 function PopupWithForm(props) {

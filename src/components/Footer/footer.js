@@ -1,4 +1,4 @@
-import "./footer.css";
+import "./Footer.css";
 import github_icon from "../../images/giticon.svg";
 import facebook_icon from "../../images/facebookicon.svg";
 import { Link } from "react-router-dom";

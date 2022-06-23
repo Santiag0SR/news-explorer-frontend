@@ -1,4 +1,4 @@
-import "./navigation.css";
+import "./Navigation.css";
 import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logoutLight from "../../images/logout_light.svg";

@@ -1,4 +1,4 @@
-import "./about.css";
+import "./About.css";
 import about__image from "../../images/author.png";
 
 function About() {

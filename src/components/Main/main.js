@@ -1,5 +1,5 @@
-import "./main.css";
-import NewsCard from "../NewsCard/newscard";
+import "./Main.css";
+import NewsCard from "../NewsCard/NewsCard";
 import { useLocation } from "react-router-dom";
 
 function Main({

@@ -1,4 +1,4 @@
-import PopupWithForm from "../PopupWithForm/popupwithform";
+import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 function SignUp({
   isOpen,

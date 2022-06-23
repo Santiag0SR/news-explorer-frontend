@@ -1,5 +1,5 @@
 import closeButton from "../../images/close_button.svg";
-import "./confirmationtooltip.css";
+import "./ConfirmationTooltip.css";
 
 function ConfirmationTooltip(props) {
   return (

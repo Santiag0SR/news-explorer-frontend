@@ -6,6 +6,13 @@ class Api {
     this.apiKey = props.apiKey;
   }
 
+  _checkErrors(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(res.status);
+  }
+
   getNewsCards({ keyword, numberCards }) {
     return fetch(
       ` ${this.baseUrl}?q=${keyword}&pageSize=${numberCards}&apiKey=${this.apiKey}`,
@@ -13,9 +20,7 @@ class Api {
         method: "GET",
         headers: this.headers,
       }
-    ).then((res) => {
-      return res.json();
-    });
+    ).then(this._checkErrors);
   }
 }
 
