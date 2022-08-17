@@ -1,11 +1,16 @@
-import { getDefaultNormalizer } from "@testing-library/react";
-
 class Api {
   constructor(props) {
     this.baseUrl = props.baseUrl;
     this.headers = props.headers;
     this.keyword = props.keyword;
     this.apiKey = props.apiKey;
+  }
+
+  _checkErrors(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(res.status);
   }
 
   getNewsCards({ keyword, numberCards }) {
@@ -15,9 +20,7 @@ class Api {
         method: "GET",
         headers: this.headers,
       }
-    ).then((res) => {
-      return res.json();
-    });
+    ).then(this._checkErrors);
   }
 }
 

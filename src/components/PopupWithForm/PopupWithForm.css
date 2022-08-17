@@ -9,22 +9,17 @@
     right: 0;
     bottom: 0;
     box-sizing: border-box;
-    display: flex;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+    display: none;
+
   }
 
   .modal_signin-open {
-    visibility: visible;
-    opacity: 1;
-    transition-delay: 0s;
+    display: flex;
+
   }
 
   .modal_signup-open {
-    visibility: visible;
-    opacity: 1;
-    transition-delay: 0s;
+    display: flex;
   }
   
   .modal__box {
@@ -93,6 +88,8 @@
   -moz-osx-font-smoothing: grayscale;
   padding: 20px 114px;
   transition: opacity 0.2s linear;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .form__submit:hover {
@@ -103,7 +100,7 @@
 .form__submit_active{
   color:#FFFFFF;
   background-color: #2F71E5;
-
+  pointer-events: all;
 }
 
 .from__redirection{
@@ -168,8 +165,14 @@
   padding: 0 0 10px 0;
 }
 
+.form__error_type_server{
+  padding:7px 0 0 0;
+  margin:0;
+  text-align: center;
+}
+
 .from__error_visible {
-visibility: hidden;  
+visibility: visible;  
 color: #ff0000;
 }
 

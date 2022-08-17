@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./searchform.css";
+import "./SearchForm.css";
 
 function SearchForm(props) {
   const [search, setSearch] = useState("");
@@ -14,10 +14,8 @@ function SearchForm(props) {
   const handleMouseEvent = (e) => {
     if (e.type === "mousedown") {
       setButtonClicked(true);
-      console.log(buttonClicked);
     } else {
       setButtonClicked(false);
-      console.log(buttonClicked);
     }
   };
 

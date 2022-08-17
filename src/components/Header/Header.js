@@ -1,5 +1,5 @@
-import SearchForm from "../SearchForm/searchform";
-import "./header.css";
+import SearchForm from "../SearchForm/SearchForm";
+import "./Header.css";
 
 function Header(props) {
   return (

@@ -1,13 +1,17 @@
-import "./navigation.css";
+import "./Navigation.css";
+import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logoutLight from "../../images/logout_light.svg";
 import logoutDark from "../../images/logout_dark.svg";
 import mobileMenuLight from "../../images/menu-mobile-light.svg";
 import mobileMenuDark from "../../images/menu-mobile-dark.svg";
 import closeMenuButton from "../../images/close_button.svg";
+import { CurrentUserContext } from "../../contexts/currentusercontext";
 
 function Navigation(props) {
   const location = useLocation();
+  const currentUser = useContext(CurrentUserContext);
+  const name = currentUser.name;
 
   return (
     <div
@@ -93,7 +97,7 @@ function Navigation(props) {
                     : ""
                 }`}
               >
-                Elise
+                {name}
                 <img
                   className={"logout-icon"}
                   alt="logout"
